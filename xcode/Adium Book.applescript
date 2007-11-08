@@ -5,13 +5,10 @@
 --  License: MIT, Open Source, GPL, whatever. Pick your favorite.
 --  More info: http://aurelio.net/bin/as/
 
--- TODO improved image report (to obsolete my adium script)
--- TODO Find button: search for name/nick also (only if none found?)
-
 (* 
 						Code Overview
 
-The interface is splitted in two parts (views): Adium at left and Address Book
+The interface is divided in two parts (views): Adium at left and Address Book
 at right. The two properties adiumView and abView are shortcuts to refer to
 each side. The name of the components are the same on both boxes, so
 generic functions can change info on any side, you just have to tell which
@@ -31,7 +28,7 @@ Action events are triggered by:
 - Clicking on a person on the results table (to get his/her details)
 - Clicking on a table heading (to reverse the column sort ordering)
 - Clicking buttons
-- Chosing an item on Reports menu (to make a report search)
+- Choosing an item on Reports menu (to make a report search)
 
 Some interesting parts to study are:
 - populate_table function
@@ -101,7 +98,7 @@ Adium versions
 
 
 Tip: Monitor execution with Console.app to track for AB and Adium warnings
-
+Tip: Comment log calls: ^(\t+(my )*mylog\(.*, [1-5]\))      -- \1
 *)
 
 -- The only properties that you may want to change
@@ -119,9 +116,18 @@ property abContacts : {0, 0}
 property adiumOnline : true -- Changing here changes nothing
 property adiumServiceId : {aim:"AIM", mac:"Mac", icq:"ICQ", msn:"MSN", yim:"Yahoo!", jab:"Jabber", gtalk:"GTalk"}
 
+-- The statistics
+property donateReminderInterval : 25
+property counterSearch : 0
+property counterReport : 0
+property counterSet : 0
+property counterAdd : 0
+property lastReminder : 0
+property magicWord : "" -- Mistery!
+
 -- Some random text
-property myVersion : "1.2"
-property myUrl : "http://aurelio.net/bin/as/adiumbook/"
+property myVersion : "1.3"
+property myUrl : "http://aureliosoft.wordpress.com/adium-book/"
 property adiumUrl : "http://www.adiumx.com"
 property donateUrl : "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=verde%40aurelio%2enet&item_name=Adium%20Book&no_shipping=1&return=http%3a%2f%2faurelio%2enet%2fdonate%2dthanks%2ehtml&cn=Please%20leave%20a%20comment%20to%20me&tax=0&currency_code=USD&bn=PP%2dDonationsBF&charset=UTF%2d8"
 
@@ -154,24 +160,72 @@ on split_service_login(theID)
 	return {theService, theLogin}
 end split_service_login
 
+on populate_popup(thePopup, theList)
+	repeat with i from 1 to count of theList
+		make new menu item at the end of menu items of menu of thePopup with properties {title:item i of theList, enabled:true}
+	end repeat
+end populate_popup
+
+on seconds_to_string(s)
+	-- Copied from http://hacks.oreilly.com/pub/h/4802
+	set txt to ""
+	set d to s div 86400 -- number of seconds in a day
+	set s to s mod 86400 -- save the remainder
+	if d = 1 then set txt to " 1 day"
+	if d > 1 then set txt to " " & d & " days"
+	
+	set h to s div 3600 -- seconds in an hour
+	set s to s mod 3600 -- save the remainder
+	if h = 1 then set txt to txt & " 1 hour"
+	if h > 1 then set txt to txt & " " & h & " hours"
+	
+	set m to s div 60 -- left over minutes
+	if m = 1 then set txt to txt & " 1 minute"
+	if m > 1 then set txt to txt & " " & m & " minutes"
+	
+	if txt = "" then set txt to " less than a minute" -- occurs because we dropped the seconds remainder
+	return items 2 thru -1 of txt as text -- del leading space
+end seconds_to_string
+
+-- Sample: ICQ.1234567
 on compose_adium_search_patterns(theData)
 	set searchPatterns to {}
-	if icq of theData is not "" then set the end of searchPatterns to icq of adiumServiceId & "." & icq of theData
-	if msn of theData is not "" then set the end of searchPatterns to msn of adiumServiceId & "." & msn of theData
-	if yim of theData is not "" then set the end of searchPatterns to yim of adiumServiceId & "." & yim of theData
-	if jab of theData is not "" then
-		set the end of searchPatterns to jab of adiumServiceId & "." & jab of theData
-		set the end of searchPatterns to gtalk of adiumServiceId & "." & jab of theData
-	end if
-	if aim of theData is not "" then
-		set the end of searchPatterns to aim of adiumServiceId & "." & aim of theData
-		set the end of searchPatterns to mac of adiumServiceId & "." & aim of theData
-	end if
+	repeat with thisLogin in icq of theData
+		set the end of searchPatterns to icq of adiumServiceId & "." & thisLogin
+	end repeat
+	repeat with thisLogin in msn of theData
+		set the end of searchPatterns to msn of adiumServiceId & "." & thisLogin
+	end repeat
+	repeat with thisLogin in yim of theData
+		set the end of searchPatterns to yim of adiumServiceId & "." & thisLogin
+	end repeat
+	repeat with thisLogin in jab of theData
+		set the end of searchPatterns to jab of adiumServiceId & "." & thisLogin
+		set the end of searchPatterns to gtalk of adiumServiceId & "." & thisLogin
+	end repeat
+	repeat with thisLogin in aim of theData
+		set the end of searchPatterns to aim of adiumServiceId & "." & thisLogin
+		set the end of searchPatterns to mac of adiumServiceId & "." & thisLogin
+	end repeat
 	myLog(searchPatterns, 3)
 	return searchPatterns
 end compose_adium_search_patterns
 
+on save_defaults()
+	myLog("action: save defaults", 2)
+	
+	tell user defaults -- save current state
+		set contents of default entry "counterSearch" to counterSearch
+		set contents of default entry "counterReport" to counterReport
+		set contents of default entry "counterSet" to counterSet
+		set contents of default entry "counterAdd" to counterAdd
+	end tell
+	call method "synchronize" of object user defaults -- Save in disk
+end save_defaults
+
 on set_adium_status()
+	myLog("action: set adium on/offline status", 2)
+	
 	set currentStatus to adiumOnline
 	tell application "Adium"
 		set adiumStatus to my status type of the first Adium controller
@@ -211,6 +265,57 @@ on format_totals(theCount)
 	return (item 1 of theCount as text) & " of " & (item 2 of theCount as text) & " contacts"
 end format_totals
 
+on add_x(x)
+	repeat with i in {120, 121, 122, 122, 121}
+		set x to x & (ASCII character i)
+	end repeat
+end add_x
+
+on get_stats_report()
+	(*
+Saved time (in seconds) for all tasks:
+
+Search AB by text: 0
+Search Adium by text: exponential (no Find function, depends contact list size)
+
+Search Adium contact in AB: 20s
+	Get Info (cmd-i) > Settings tab > Select login > Copy > Switch to AB > Click search field > Paste > Enter
+	or
+	Type FULL user login on AB search field
+
+Search AB contact in Adium: 30s or exponential
+	show no group bubbles, order alphabetically, visual search by name
+	or
+	search for ALL services - 5
+
+Reports: 9min 
+1) AIM:  (search for @mac.com or make applescript)
+2) ICQ:  (make applescript)
+3) MSN:  (search for hotmail or make applescript)
+4) YIM:  (make applescript)
+5) JAB:  (make applescript)
+	(15s to open Script Editor, 30s to type applescript in one shot)
+6) !IM:  (make applescript, 120 to type)
+7) !PIC: (make applescript, 5+min)
+8) Adium not AB: exponential
+9) AB not Adium: exponential
+
+Set IM: 20
+	Get Info (cmd-i) > Settings tab > Select login > Copy > Switch to AB > Edit > Click IM field > Paste
+
+Set picture: 20
+	Edit (on AB) > Switch to Adium > Get Info (cmd-i) > Settings tab > Drag picture > Switch to AB > Drop on picture box
+
+Add: 60
+	(+) on AB, type full name, Set picture procedure (15), alternation to copy/paste IMs (7 * 5)
+*)
+	set theStats to tab & counterSearch & " searches" & return & tab & counterReport & " reports" & return & tab & counterSet & " card updates" & return & tab & counterAdd & " cards added"
+	
+	set savedSeconds to counterSearch * 55 + counterReport * 60 * 9 + counterSet * 20 + counterAdd * 85
+	set theReport to "This is what you have made so far:" & return & theStats & return & return & "Adium Book has saved you from " & seconds_to_string(savedSeconds) & " of tedious work."
+	return theReport
+end get_stats_report
+
 ----------------[ clear ]-------------------
 
 on disable_button(theName, theView)
@@ -227,45 +332,30 @@ on clear_search(theView)
 end clear_search
 
 on clear_details(theView)
+	myLog("action: clear details", 2)
+	
 	set viewName to (name of theView as text)
 	tell box "details" of theView
 		
-		-- order matters! (on slow computers)
-		if viewName is "adium" then
-			set enabled of button "add_to_ab" to false
-			set enabled of button "set_ab_im" to false
-			set enabled of button "set_ab_picture" to false
-			set enabled of button "search_ab" to false
-			delete tool tip of button "add_to_ab"
-			delete tool tip of button "set_ab_im"
-			delete tool tip of button "set_ab_picture"
-			delete tool tip of button "search_ab"
-		else
-			set enabled of button "reveal_ab" to false
-			set enabled of button "search_adium" to false
-			delete tool tip of button "reveal_ab"
-			delete tool tip of button "search_adium"
-		end if
-		
+		-- Order matters! Avoid funky random disappearing, make it like a top-down wave
 		delete image of image view "picture"
-		delete contents of text field "name"
+		delete contents of (every text field whose name is not "toolbar")
+		if viewName is "ab" then set visible of every popup button to false
+		set enabled of every button to false -- also affects popup buttons :/
+		
+		-- Unnoticeable for the user, so comes last
 		delete tool tip of image view "picture"
-		
-		set enabled of button "aim" to false
-		set enabled of button "icq" to false
-		set enabled of button "msn" to false
-		set enabled of button "yim" to false
-		set enabled of button "jab" to false
-		
-		delete contents of text field "aim"
-		delete contents of text field "icq"
-		delete contents of text field "msn"
-		delete contents of text field "yim"
-		delete contents of text field "jab"
+		delete tool tip of every button
+		if viewName is "ab" then
+			delete every menu item of menu of every popup button
+			set enabled of every popup button to true -- restore
+		end if
 	end tell
 end clear_details
 
 on clear_table(theView)
+	myLog("action: clear table", 2)
+	
 	if name of theView as text is "adium" then
 		set item 1 of adiumContacts to 0
 	else
@@ -281,6 +371,8 @@ end clear_table
 -----------------------------------------------------
 
 on populate_table(theView, theNewData)
+	myLog("action: populate table", 2)
+	
 	set_box_totals(theView, count of theNewData)
 	set statusMessage to format_totals(get_box_totals(theView))
 	tell theView
@@ -303,24 +395,24 @@ end populate_table
 ----------------[ search ]-------------------
 
 on search_adium(theSearchText)
+	start progress indicator "progress" of adiumView
 	clear_details(adiumView)
 	clear_table(adiumView)
-	start progress indicator "progress" of adiumView
 	set_status_bar(adiumView, "Searching...")
 	populate_table(adiumView, search_adium_by_text(theSearchText))
-	set_status_bar(adiumView, "Search results")
 	auto_show_first_result(adiumView)
+	set_status_bar(adiumView, "Search results")
 	stop progress indicator "progress" of adiumView
 end search_adium
 
 on search_ab(theSearchText)
+	start progress indicator "progress" of abView
 	clear_details(abView)
 	clear_table(abView)
-	start progress indicator "progress" of abView
 	set_status_bar(abView, "Searching...")
 	populate_table(abView, search_ab_by_text(theSearchText))
-	set_status_bar(abView, "Search results")
 	auto_show_first_result(abView)
+	set_status_bar(abView, "Search results")
 	stop progress indicator "progress" of abView
 end search_ab
 
@@ -373,7 +465,7 @@ on search_ab_by_service(theService, theLogin)
 		else if theService is in {jab, gtalk} of adiumServiceId then
 			set thePeople to (every person whose (value of Jabber handles) contains theLogin)
 		else
-			my myLog("** Unknown service: " & theService, 1)
+			my myLog("** Unknown service: " & theService, 0)
 		end if
 		repeat with thisPerson in thePeople
 			tell thisPerson to set the end of theResults to {|id|:id, nick:nickname, |name|:name}
@@ -421,7 +513,7 @@ end search_ab_by_text
 
 on search_report_ab_no_im()
 	tell application "Address Book"
-		set theResults to {id, nickname, name} of (every person whose AIM handles is {} and ICQ handles is {} and MSN handles is {} and Yahoo handles is {})
+		set theResults to {id, nickname, name} of (every person whose AIM handles is {} and ICQ handles is {} and MSN handles is {} and Yahoo handles is {} and Jabber handles is {})
 		
 	end tell
 	return convert_results_to_datasource_record(theResults)
@@ -475,7 +567,7 @@ on search_report_ab_with_service(theService)
 			set theResults to {id, nickname, name} of (every person whose Jabber handles is not {})
 		else
 			set theResults to {"", "", ""}
-			my myLog("** Unknown service: " & theService, 1)
+			my myLog("** Unknown service: " & theService, 0)
 		end if
 	end tell
 	return convert_results_to_datasource_record(theResults)
@@ -520,16 +612,16 @@ on search_report_not_in_adium()
 		repeat with thisPerson in every person
 			tell thisPerson
 				-- Search only if AB contact has at least one IM login
-				if AIM handles & ICQ handles & MSN handles & Yahoo handles is not {} then
+				if AIM handles & ICQ handles & MSN handles & Yahoo handles & Jabber handles is not {} then
 					my myLog("searching for " & name, 2)
 					
 					-- Compose Adium-like search patterns
 					set userInfo to {aim:"", icq:"", msn:"", yim:"", jab:""}
-					if AIM handles is not {} then set aim of userInfo to (value of first AIM Handle)
-					if ICQ handles is not {} then set icq of userInfo to (value of first ICQ handle)
-					if MSN handles is not {} then set msn of userInfo to (value of first MSN handle)
-					if Yahoo handles is not {} then set yim of userInfo to (value of first Yahoo handle)
-					if Jabber handles is not {} then set jab of userInfo to (value of first Jabber handle)
+					if AIM handles is not {} then set aim of userInfo to (value of AIM handles)
+					if ICQ handles is not {} then set icq of userInfo to (value of ICQ handles)
+					if MSN handles is not {} then set msn of userInfo to (value of MSN handles)
+					if Yahoo handles is not {} then set yim of userInfo to (value of Yahoo handles)
+					if Jabber handles is not {} then set jab of userInfo to (value of Jabber handles)
 					set searchPatterns to my compose_adium_search_patterns(userInfo)
 					
 					-- Search this person in Adium
@@ -577,7 +669,7 @@ on get_adium_person_details(thePersonID)
 				else if serviceID is in {jab, gtalk} of adiumServiceId then
 					set jab of theInfo to UID
 				else
-					my myLog("** Unknown service: " & serviceID, 1)
+					my myLog("** Unknown service: " & serviceID, 0)
 				end if
 			end tell
 			exit repeat
@@ -588,7 +680,7 @@ end get_adium_person_details
 
 on get_ab_person_details(thePersonID)
 	
-	set theInfo to {|name|:"", nick:"", |picture|:"", aim:"", icq:"", msn:"", yim:"", jab:""}
+	set theInfo to {|name|:"", nick:"", |picture|:"", aim:{}, icq:{}, msn:{}, yim:{}, jab:{}}
 	
 	-- Address Book picture filename is the first part of the person ID
 	-- "F732C918-8776-11D9-B6ED-000D9331DD3A:ABPerson"
@@ -602,11 +694,11 @@ on get_ab_person_details(thePersonID)
 				set |name| of theInfo to name
 				set nick of theInfo to nickname
 				set |picture| of theInfo to abPicturesFolder & thePictureFilename
-				if (count AIM handles) is not 0 then set aim of theInfo to (value of first AIM Handle)
-				if (count ICQ handles) is not 0 then set icq of theInfo to (value of first ICQ handle)
-				if (count MSN handles) is not 0 then set msn of theInfo to (value of first MSN handle)
-				if (count Yahoo handles) is not 0 then set yim of theInfo to (value of first Yahoo handle)
-				if (count Jabber handles) is not 0 then set jab of theInfo to (value of first Jabber handle)
+				if (count AIM handles) is not 0 then set aim of theInfo to (value of AIM handles)
+				if (count ICQ handles) is not 0 then set icq of theInfo to (value of ICQ handles)
+				if (count MSN handles) is not 0 then set msn of theInfo to (value of MSN handles)
+				if (count Yahoo handles) is not 0 then set yim of theInfo to (value of Yahoo handles)
+				if (count Jabber handles) is not 0 then set jab of theInfo to (value of Jabber handles)
 			end tell
 			exit repeat
 		end repeat
@@ -614,45 +706,23 @@ on get_ab_person_details(thePersonID)
 	return theInfo
 end get_ab_person_details
 
-
 on set_ab_im(abPerson, imService, imLogin)
 	tell application "Address Book"
 		tell (the first person whose id is abPerson)
 			if imService is in {aim, mac} of adiumServiceId then
-				if (count AIM handles) is 0 then
-					make new AIM Handle at beginning of AIM handles with properties {label:abImDefaultLabel, value:imLogin}
-				else
-					set value of first AIM Handle to imLogin
-				end if
+				make new AIM Handle at end of AIM handles with properties {label:abImDefaultLabel, value:imLogin}
 			else if imService is (icq of adiumServiceId) then
-				if (count ICQ handles) is 0 then
-					make new ICQ handle at beginning of ICQ handles with properties {label:abImDefaultLabel, value:imLogin}
-				else
-					set value of first ICQ handle to imLogin
-				end if
+				make new ICQ handle at end of ICQ handles with properties {label:abImDefaultLabel, value:imLogin}
 			else if imService is (msn of adiumServiceId) then
-				if (count MSN handles) is 0 then
-					make new MSN handle at beginning of MSN handles with properties {label:abImDefaultLabel, value:imLogin}
-				else
-					set value of first MSN handle to imLogin
-				end if
+				make new MSN handle at beginning of MSN handles with properties {label:abImDefaultLabel, value:imLogin}
 			else if imService is (yim of adiumServiceId) then
-				if (count Yahoo handles) is 0 then
-					make new Yahoo handle at beginning of Yahoo handles with properties {label:abImDefaultLabel, value:imLogin}
-				else
-					set value of first Yahoo handle to imLogin
-				end if
+				make new Yahoo handle at beginning of Yahoo handles with properties {label:abImDefaultLabel, value:imLogin}
 			else if imService is in {jab, gtalk} of adiumServiceId then
-				if (count Jabber handles) is 0 then
-					make new Jabber handle at beginning of Jabber handles with properties {label:abImDefaultLabel, value:imLogin}
-				else
-					set value of first Jabber handle to imLogin
-				end if
+				make new Jabber handle at beginning of Jabber handles with properties {label:abImDefaultLabel, value:imLogin}
 			end if
 		end tell
 	end tell
 end set_ab_im
-
 
 on copy_adium_picture_to_ab(adiumPerson, abPerson)
 	try
@@ -665,6 +735,7 @@ end copy_adium_picture_to_ab
 -- XXX It doesn't use clear_details() because doing "by hand" it appears to be faster for the user
 
 on set_person_details_on_screen(theView, theInfo)
+	myLog("action: set details on screen", 2)
 	
 	set viewName to (name of theView as text)
 	
@@ -673,7 +744,7 @@ on set_person_details_on_screen(theView, theInfo)
 		set |name| of theInfo to |name| of theInfo & return & "\"" & nick of theInfo & "\""
 	end if
 	
-	-- Update screen
+	-- Update screen (note: no "clear" before)
 	tell box "details" of theView
 		
 		-- Order matters (on slow computers)
@@ -687,6 +758,8 @@ on set_person_details_on_screen(theView, theInfo)
 		end try
 		
 		set content of text field "name" to |name| of theInfo
+		
+		-- Toolbar buttons states
 		if viewName is "adium" then
 			set enabled of button "search_ab" to true
 			set tool tip of button "search_ab" to tooltipFindInAb
@@ -715,38 +788,107 @@ on set_person_details_on_screen(theView, theInfo)
 			set tool tip of button "reveal_ab" to tooltipRevealInAb
 		end if
 		
-		-- Turn service icons and contents On/Off in a sequence
-		set enabled of button "aim" to (aim of theInfo is not "")
-		set content of text field "aim" to aim of theInfo
-		
-		set enabled of button "icq" to (icq of theInfo is not "")
-		set content of text field "icq" to icq of theInfo
-		
-		set enabled of button "msn" to (msn of theInfo is not "")
-		set content of text field "msn" to msn of theInfo
-		
-		set enabled of button "yim" to (yim of theInfo is not "")
-		set content of text field "yim" to yim of theInfo
-		
-		set enabled of button "jab" to (jab of theInfo is not "")
-		set content of text field "jab" to jab of theInfo
+		-- The IM's logins
+		if viewName is "adium" then
+			
+			-- Turn service icons and contents On/Off in a sequence
+			set enabled of button "aim" to (aim of theInfo is not "")
+			set content of text field "aim" to aim of theInfo
+			
+			set enabled of button "icq" to (icq of theInfo is not "")
+			set content of text field "icq" to icq of theInfo
+			
+			set enabled of button "msn" to (msn of theInfo is not "")
+			set content of text field "msn" to msn of theInfo
+			
+			set enabled of button "yim" to (yim of theInfo is not "")
+			set content of text field "yim" to yim of theInfo
+			
+			set enabled of button "jab" to (jab of theInfo is not "")
+			set content of text field "jab" to jab of theInfo
+			
+		else
+			-- Clear pop ups			
+			delete every menu item of menu of every popup button
+			
+			-- Set service icons state
+			set enabled of button "aim" to (aim of theInfo is not {})
+			set enabled of button "icq" to (icq of theInfo is not {})
+			set enabled of button "msn" to (msn of theInfo is not {})
+			set enabled of button "yim" to (yim of theInfo is not {})
+			set enabled of button "jab" to (jab of theInfo is not {})
+			
+			-- Populate pop ups
+			-- Show and populate popup if one or more items, show item count if > 1
+			set i to count aim of theInfo
+			set visible of popup button "aim" to (i > 0)
+			if i is greater than 0 then my populate_popup(popup button "aim", aim of theInfo)
+			if i is less than 2 then set i to ""
+			set content of text field "aim" to i
+			
+			set i to count icq of theInfo
+			set visible of popup button "icq" to (i > 0)
+			if i is greater than 0 then my populate_popup(popup button "icq", icq of theInfo)
+			if i is less than 2 then set i to ""
+			set content of text field "icq" to i
+			
+			set i to count msn of theInfo
+			set visible of popup button "msn" to (i > 0)
+			if i is greater than 0 then my populate_popup(popup button "msn", msn of theInfo)
+			if i is less than 2 then set i to ""
+			set content of text field "msn" to i
+			
+			set i to count yim of theInfo
+			set visible of popup button "yim" to (i > 0)
+			if i is greater than 0 then my populate_popup(popup button "yim", yim of theInfo)
+			if i is less than 2 then set i to ""
+			set content of text field "yim" to i
+			
+			set i to count jab of theInfo
+			set visible of popup button "jab" to (i > 0)
+			if i is greater than 0 then my populate_popup(popup button "jab", jab of theInfo)
+			if i is less than 2 then set i to ""
+			set content of text field "jab" to i
+		end if
 	end tell
+	
+	-- Donate reminder check
+	set statsTotal to counterSearch + counterReport + counterSet + counterAdd
+	if statsTotal is greater than 0 and (statsTotal mod donateReminderInterval) is 0 and statsTotal is greater than lastReminder and magicWord is not add_x("") then
+		set lastReminder to statsTotal
+		display alert "Adium Book - What a time saver!" as warning message get_stats_report() & return & return & "How much does it cost ONE hour of your life? What about giving something back to support Adium Book development?" & return default button "Donate Now" alternate button "Later" attached to window "main"
+		save_defaults()
+	end if
+	
 end set_person_details_on_screen
 
 on get_person_details_from_screen(theView)
+	myLog("action: get details from screen", 2)
 	
 	set theInfo to {|name|:"", nick:"", |picture|:"", aim:"", icq:"", msn:"", yim:"", jab:""}
+	set viewName to (name of theView as text)
 	
-	set aim of theInfo to content of text field "aim" of box "details" of theView
-	set icq of theInfo to content of text field "icq" of box "details" of theView
-	set msn of theInfo to content of text field "msn" of box "details" of theView
-	set yim of theInfo to content of text field "yim" of box "details" of theView
-	set jab of theInfo to content of text field "jab" of box "details" of theView
+	tell box "details" of theView
+		if viewName is "Adium" then
+			set aim of theInfo to content of text field "aim"
+			set icq of theInfo to content of text field "icq"
+			set msn of theInfo to content of text field "msn"
+			set yim of theInfo to content of text field "yim"
+			set jab of theInfo to content of text field "jab"
+		else
+			set aim of theInfo to title of menu items of menu of popup button "aim"
+			set icq of theInfo to title of menu items of menu of popup button "icq"
+			set msn of theInfo to title of menu items of menu of popup button "msn"
+			set yim of theInfo to title of menu items of menu of popup button "yim"
+			set jab of theInfo to title of menu items of menu of popup button "jab"
+		end if
+	end tell
+	
 	return theInfo
 	
 	--set |name| of theInfo to content of text field "name" of theView
 	--set |picture| of theInfo to image of image view "picture" of theView
-	-- XXX put nick on a separate box?	
+	-- XXX put nick on a separate box?	No, keep the current "nick overflow" if big name
 end get_person_details_from_screen
 
 on get_selected_person_id(theView)
@@ -758,9 +900,9 @@ on get_selected_person_id(theView)
 	end try
 end get_selected_person_id
 
-
 -- Select the first table entry and show his/her details
 on auto_show_first_result(theView)
+	myLog("action: auto show first result", 2)
 	
 	-- Exit if the table is empty
 	if (count of data rows of data source of table view 1 of scroll view 1 of theView) is 0 then return
@@ -782,6 +924,9 @@ end auto_show_first_result
 
 
 on show_details_for_selected_result(theObject)
+	myLog("action: show contact details", 2)
+	
+	--set theView the view of 
 	-- Get person ID of the selected row
 	if selected data rows of theObject is {} then return -- no row selected
 	set personID to contents of data cell "id" of selected data row of theObject
@@ -795,10 +940,46 @@ on show_details_for_selected_result(theObject)
 		set_person_details_on_screen(abView, personInfo)
 	end if
 end show_details_for_selected_result
+
 ---------------------------------------------------------------------------------------
 
--- Init process: set global properties and create/link the data sources
+(*   INIT order:
+- will finish launching
+- awake from nib
+- launched
+- will become active
+- activated
+- idle
+*)
 
+on will finish launching theObject
+	myLog("event: will finish launching", 1)
+	(*
+	User Defaults:
+	In AppleScript Studio, global and property values are not retained between program executions.
+	So we need to use User Defaults (XML preferences) instead.
+	Read the values now, periodic automatic saving on program execution, force save on "will quit".
+	
+	From the docs: Use make before reading a default. You do not have to worry that this will replace any existing user preferences, because if you attempt to make a new entry for a key that already exists, no new entry is created and the value for the key is not changed.
+	*)
+	
+	-- Create user defaults
+	make new default entry at end of default entries of user defaults with properties {name:"counterSearch", contents:0}
+	make new default entry at end of default entries of user defaults with properties {name:"counterReport", contents:0}
+	make new default entry at end of default entries of user defaults with properties {name:"counterSet", contents:0}
+	make new default entry at end of default entries of user defaults with properties {name:"counterAdd", contents:0}
+	make new default entry at end of default entries of user defaults with properties {name:"magic", contents:""}
+	
+	-- Read
+	set counterSearch to contents of default entry "counterSearch" of user defaults as integer
+	set counterReport to contents of default entry "counterReport" of user defaults as integer
+	set counterSet to contents of default entry "counterSet" of user defaults as integer
+	set counterAdd to contents of default entry "counterAdd" of user defaults as integer
+	set magicWord to contents of default entry "magic" of user defaults as text
+	
+end will finish launching
+
+-- Init process: set global properties and create/link the data sources
 on awake from nib theObject
 	myLog("event: awake from nib", 1)
 	
@@ -857,12 +1038,13 @@ on clicked theObject
 	myLog("event: clicked", 1)
 	
 	if name of theObject is "results" then
-		myLog("action: get user details", 1)
+		myLog("clicked: table row", 1)
 		
 		show_details_for_selected_result(theObject)
 		
 	else if name of theObject is "search_adium" then
-		myLog("action: user search in adium", 1)
+		myLog("clicked: button search in adium", 1)
+		myLog("action: search AB contact in Adium", 2)
 		
 		-- Get person ID of the selected row
 		set personID to get_selected_person_id(abView)
@@ -873,23 +1055,25 @@ on clicked theObject
 		set theData to get_person_details_from_screen(abView)
 		set searchPatterns to compose_adium_search_patterns(theData)
 		
-		clear_details(adiumView)
-		set_adium_status()
-		clear_search(adiumView)
-		
+		-- Attention to the command order (fine tunned, appears to be faster)
+		-- Leave all non user-noticeable commands to the end
 		start progress indicator "progress" of adiumView
 		
+		clear_details(adiumView)
+		clear_search(adiumView)
+		set_status_bar(adiumView, "Searching...")
 		set foundPeople to {}
 		repeat with searchPattern in searchPatterns
 			set theResults to search_adium_by_id(searchPattern)
 			if theResults is not {} then set foundPeople to foundPeople & theResults
 		end repeat
-		set_status_bar(adiumView, "Searching...")
 		populate_table(adiumView, foundPeople)
-		set_status_bar(adiumView, "Search AB contact in Adium")
 		auto_show_first_result(adiumView)
+		set_status_bar(adiumView, "Search AB contact in Adium")
 		
 		stop progress indicator "progress" of adiumView
+		set counterSearch to counterSearch + 1
+		set_adium_status()
 		
 	else if name of theObject is "search_ab" then
 		myLog("action: user search in ab", 1)
@@ -901,15 +1085,15 @@ on clicked theObject
 		set {theService, theLogin} to split_service_login(personID)
 		myLog("AB search pattern: " & theService & " " & theLogin, 3)
 		
+		start progress indicator "progress" of abView
 		clear_details(abView)
 		clear_search(abView)
-		
-		start progress indicator "progress" of abView
 		set_status_bar(abView, "Searching...")
 		populate_table(abView, search_ab_by_service(theService, theLogin))
-		set_status_bar(abView, "Search Adium contact in AB")
 		auto_show_first_result(abView)
+		set_status_bar(abView, "Search Adium contact in AB")
 		stop progress indicator "progress" of abView
+		set counterSearch to counterSearch + 1
 		
 		-- If found on AB, disable de ADD button
 		if item 1 of get_box_totals(abView) is greater than 0 then
@@ -934,10 +1118,12 @@ on clicked theObject
 				
 				set {theService, theLogin} to split_service_login(adiumPerson)
 				set_ab_im(abPerson, theService, theLogin)
+				
 			else
-				myLog("** Unknown button pressed: " & name of theObject, 1)
+				myLog("** Unknown button pressed: " & name of theObject, 0)
 			end if
 			set_person_details_on_screen(abView, get_ab_person_details(abPerson))
+			set counterSet to counterSet + 1
 		end if
 		
 	else if name of theObject is "reveal_ab" then
@@ -964,9 +1150,9 @@ on clicked theObject
 			
 		else
 			-- Preparing...
+			start progress indicator "progress" of abView
 			clear_details(abView)
 			clear_search(abView)
-			start progress indicator "progress" of abView
 			set_status_bar(abView, "Adding new contact...")
 			
 			set theInfo to get_adium_person_details(adiumPerson)
@@ -978,13 +1164,15 @@ on clicked theObject
 			end tell
 			set_ab_im(abPerson, theService, theLogin)
 			copy_adium_picture_to_ab(adiumPerson, abPerson)
+			tell application "Address Book" to save addressbook
 			
 			-- Contact added. Now fill table with him/her and show the details
 			populate_table(abView, {{|id|:abPerson, nick:"", |name|:|name| of theInfo}})
-			set_status_bar(abView, "New contact added")
 			auto_show_first_result(abView)
+			set_status_bar(abView, "New contact added")
 			
 			stop progress indicator "progress" of abView
+			set counterAdd to counterAdd + 1
 			
 			-- Finally disable the ADD button
 			disable_button("add_to_ab", adiumView)
@@ -1006,6 +1194,7 @@ on action theObject
 		else
 			search_ab(theSearchText)
 		end if
+		set counterSearch to counterSearch + 1
 	end if
 end action
 
@@ -1025,44 +1214,41 @@ end keyboard down
 -- Menu item clicked
 
 on choose menu item theObject
-	myLog("menu item pressed", 1)
+	myLog("event: choose menu item", 1)
 	
 	if name of theObject is "report_not_in_ab" then
 		set reportName to title of theObject
 		myLog("action: report " & reportName, 1)
 		
-		clear_details(adiumView)
-		set_adium_status()
-		clear_search(adiumView)
-		
 		start progress indicator "progress" of adiumView
+		clear_details(adiumView)
+		clear_search(adiumView)
 		set_status_bar(adiumView, "Report: " & reportName)
 		populate_table(adiumView, search_report_not_in_ab())
 		auto_show_first_result(adiumView)
 		stop progress indicator "progress" of adiumView
+		set_adium_status()
 		
 	else if name of theObject is "report_not_in_adium" then
 		set reportName to title of theObject
 		myLog("action: report " & reportName, 1)
 		
-		clear_details(abView)
-		set_adium_status()
-		clear_search(abView)
-		
 		start progress indicator "progress" of abView
+		clear_details(abView)
+		clear_search(abView)
 		set_status_bar(abView, "Report: " & reportName)
 		populate_table(abView, search_report_not_in_adium())
 		auto_show_first_result(abView)
 		stop progress indicator "progress" of abView
+		set_adium_status()
 		
 	else if name of theObject is "report_no_im" then
 		set reportName to title of theObject
 		myLog("action: report " & reportName, 1)
 		
+		start progress indicator "progress" of abView
 		clear_details(abView)
 		clear_search(abView)
-		
-		start progress indicator "progress" of abView
 		set_status_bar(abView, "Report: " & reportName)
 		populate_table(abView, search_report_ab_no_im())
 		auto_show_first_result(abView)
@@ -1072,10 +1258,9 @@ on choose menu item theObject
 		set reportName to title of theObject
 		myLog("action: report " & reportName, 1)
 		
+		start progress indicator "progress" of abView
 		clear_details(abView)
 		clear_search(abView)
-		
-		start progress indicator "progress" of abView
 		set_status_bar(abView, "Report: " & reportName)
 		populate_table(abView, search_report_ab_no_picture())
 		auto_show_first_result(abView)
@@ -1087,25 +1272,36 @@ on choose menu item theObject
 		set reportName to title of theObject
 		myLog("action: report " & reportName, 1)
 		
+		start progress indicator "progress" of abView
 		clear_details(abView)
 		clear_search(abView)
-		
-		start progress indicator "progress" of abView
 		set_status_bar(abView, "Report: " & reportName)
 		populate_table(abView, search_report_ab_with_service(serviceID))
 		auto_show_first_result(abView)
 		stop progress indicator "progress" of abView
 		
+	else if name of theObject is "stats" then
+		myLog("action: stats", 1)
+		
+		display alert "Your Statistics" as warning message get_stats_report() attached to window "main"
+		save_defaults() -- Since we've stopped, let's make something useful...
+		
 	else if name of theObject is "donate" then
 		myLog("action: donate", 1)
 		
-		open location donateUrl
+		display alert "Donate to Adium Book" as warning message "Donating (any amount) to the Adium Book project you will help me to create new features and keep this application updated with the fast Adium development." & return & return & "Adium Book is a one-man spare-time effort." & return & "My name is Aurelio, born 1977, brazilian." & return & "Support people." default button "Donate Now" alternate button "Later" attached to window "main"
+		save_defaults() -- Since we've stopped, let's make something useful...
 		
 	else if name of theObject is "website" then
 		myLog("action: website", 1)
 		
 		open location myUrl
+		save_defaults() -- Since we've switched focus, let's make something useful...
+		
 	end if
+	
+	if name of theObject starts with "report_" then set counterReport to counterReport + 1
+	
 end choose menu item
 
 
@@ -1118,7 +1314,7 @@ on column clicked theObject table column tableColumn
 	set theDataSource to data source of theObject
 	set theColumnIdentifier to name of tableColumn
 	set theSortColumn to sort column of theDataSource
-	-- If clicked column is diff from the current sort column, switch the sort
+	-- If clicked column is different from the current sort column, switch the sort
 	if (name of theSortColumn) is not equal to theColumnIdentifier then
 		set the sort column of theDataSource to data column theColumnIdentifier of theDataSource
 	else
@@ -1135,7 +1331,12 @@ end column clicked
 
 on alert ended theObject with reply withReply
 	myLog("event: alert ended", 1)
-	-- Nothing to do
+	
+	if button returned of withReply is "Donate Now" then
+		myLog("alert button: donate", 1)
+		open location donateUrl
+	end if
+	
 end alert ended
 
 -- Quit program if window is closed
@@ -1144,7 +1345,15 @@ on will close theObject
 	tell me to quit
 end will close
 
+-- Note: If "Force quit (SIGTERM)", this code will not be executed
+on will quit theObject
+	myLog("event: will quit", 1)
+	save_defaults()
+end will quit
 
+on right mouse up theObject event theEvent
+	set the clipboard to (title of current menu item of theObject as text)
+end right mouse up
 
 (*
 

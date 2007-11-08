@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAppleScriptBuildPhase section */
+		E7A8978B0A8D1880006383FB /* AppleScript */ = {
+			isa = PBXAppleScriptBuildPhase;
+			buildActionMask = 2147483647;
+			contextName = "";
+			files = (
+				E7A8978C0A8D1880006383FB /* Adium Book.applescript in AppleScript */,
+			);
+			isSharedContext = 0;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXAppleScriptBuildPhase section */
+
+/* Begin PBXBuildFile section */
+		E7A8978C0A8D1880006383FB /* Adium Book.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = DA206CF3015C4E8B03C91932 /* Adium Book.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
+		E7A8978E0A8D1880006383FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		E7A8978F0A8D1880006383FB /* addressbook.png in Resources */ = {isa = PBXBuildFile; fileRef = E71CB52B088480A400ACA68A /* addressbook.png */; };
+		E7A897900A8D1880006383FB /* aim.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0A00886C25200F803BB /* aim.png */; };
+		E7A897910A8D1880006383FB /* icq.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0A40886C26D00F803BB /* icq.png */; };
+		E7A897920A8D1880006383FB /* msn.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0A80886C27700F803BB /* msn.png */; };
+		E7A897930A8D1880006383FB /* adium.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0F70886C54300F803BB /* adium.png */; };
+		E7A897940A8D1880006383FB /* adium-offline.png in Resources */ = {isa = PBXBuildFile; fileRef = E7959F43088873D3006734F5 /* adium-offline.png */; };
+		E7A897950A8D1880006383FB /* adiumbook.icns in Resources */ = {isa = PBXBuildFile; fileRef = E7E69B6808A6AD120001AF51 /* adiumbook.icns */; };
+		E7A897960A8D1880006383FB /* jab.png in Resources */ = {isa = PBXBuildFile; fileRef = E714EC6C08C54496000BCD7D /* jab.png */; };
+		E7A897970A8D1880006383FB /* yim.png in Resources */ = {isa = PBXBuildFile; fileRef = E714EC6D08C54496000BCD7D /* yim.png */; };
+		E7A897980A8D1880006383FB /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = E757E62708D3676200101427 /* MainMenu.nib */; };
+		E7A897990A8D1880006383FB /* but-find-adium.png in Resources */ = {isa = PBXBuildFile; fileRef = E703E40008D3C3630044A084 /* but-find-adium.png */; };
+		E7A8979A0A8D1880006383FB /* but-set-im.png in Resources */ = {isa = PBXBuildFile; fileRef = E721BDD008D4816700DF5773 /* but-set-im.png */; };
+		E7A8979B0A8D1880006383FB /* but-add-card.png in Resources */ = {isa = PBXBuildFile; fileRef = E721BDD108D4816700DF5773 /* but-add-card.png */; };
+		E7A8979C0A8D1880006383FB /* but-find-ab.png in Resources */ = {isa = PBXBuildFile; fileRef = E721BDD208D4816700DF5773 /* but-find-ab.png */; };
+		E7A8979D0A8D1880006383FB /* but-set-pict.png in Resources */ = {isa = PBXBuildFile; fileRef = E721BDD308D4816700DF5773 /* but-set-pict.png */; };
+		E7A8979E0A8D1880006383FB /* but-reveal-ab.png in Resources */ = {isa = PBXBuildFile; fileRef = E786BC050A862FE40047336A /* but-reveal-ab.png */; };
+		E7A8979F0A8D1880006383FB /* Adium Book Help in Resources */ = {isa = PBXBuildFile; fileRef = E786BC6D0A865E060047336A /* Adium Book Help */; };
+		E7A897A10A8D1880006383FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		E7A897A30A8D1880006383FB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E7A897A40A8D1880006383FB /* AppleScriptKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppleScriptKit.framework; path = /System/Library/Frameworks/AppleScriptKit.framework; sourceTree = "<absolute>"; };
+		DA206CF3015C4E8B03C91932 /* Adium Book.applescript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.applescript; path = "Adium Book.applescript"; sourceTree = "<group>"; };
+		E703E40008D3C3630044A084 /* but-find-adium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-find-adium.png"; sourceTree = "<group>"; };
+		E714EC6C08C54496000BCD7D /* jab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jab.png; sourceTree = "<group>"; };
+		E714EC6D08C54496000BCD7D /* yim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yim.png; sourceTree = "<group>"; };
+		E71CB52B088480A400ACA68A /* addressbook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addressbook.png; sourceTree = "<group>"; };
+		E721BDD008D4816700DF5773 /* but-set-im.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-set-im.png"; sourceTree = "<group>"; };
+		E721BDD108D4816700DF5773 /* but-add-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-add-card.png"; sourceTree = "<group>"; };
+		E721BDD208D4816700DF5773 /* but-find-ab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-find-ab.png"; sourceTree = "<group>"; };
+		E721BDD308D4816700DF5773 /* but-set-pict.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-set-pict.png"; sourceTree = "<group>"; };
+		E757E62808D3676200101427 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		E76AF0A00886C25200F803BB /* aim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aim.png; sourceTree = "<group>"; };
+		E76AF0A40886C26D00F803BB /* icq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icq.png; sourceTree = "<group>"; };
+		E76AF0A80886C27700F803BB /* msn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = msn.png; sourceTree = "<group>"; };
+		E76AF0F70886C54300F803BB /* adium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adium.png; sourceTree = "<group>"; };
+		E786BC050A862FE40047336A /* but-reveal-ab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-reveal-ab.png"; sourceTree = "<group>"; };
+		E786BC6D0A865E060047336A /* Adium Book Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Adium Book Help"; sourceTree = "<group>"; };
+		E7959F43088873D3006734F5 /* adium-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "adium-offline.png"; sourceTree = "<group>"; };
+		E7A897A90A8D1880006383FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7A897AA0A8D1880006383FB /* Adium Book.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Adium Book.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7D451D20A922A2B001246EC /* AppleScriptKit.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; name = AppleScriptKit.sdef; path = /System/Library/Frameworks/AppleScriptKit.framework/Versions/A/Resources/AppleScriptKit.sdef; sourceTree = "<absolute>"; };
+		E7E69B6808A6AD120001AF51 /* adiumbook.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = adiumbook.icns; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E7A897A20A8D1880006383FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7A897A30A8D1880006383FB /* Cocoa.framework in Frameworks */,
+				E7A897A40A8D1880006383FB /* AppleScriptKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				DA206CF3015C4E8B03C91932 /* Adium Book.applescript */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				DA206CF1015C4E2903C91932 /* AppleScriptKit.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E7A897AA0A8D1880006383FB /* Adium Book.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Scripts */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				E7A897A90A8D1880006383FB /* Info.plist */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E7D451D20A922A2B001246EC /* AppleScriptKit.sdef */,
+				E786BC6D0A865E060047336A /* Adium Book Help */,
+				E71CB53D0884875700ACA68A /* img */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				E757E62708D3676200101427 /* MainMenu.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E71CB53D0884875700ACA68A /* img */ = {
+			isa = PBXGroup;
+			children = (
+				E786BC050A862FE40047336A /* but-reveal-ab.png */,
+				E7E69B6808A6AD120001AF51 /* adiumbook.icns */,
+				E76AF0F70886C54300F803BB /* adium.png */,
+				E7959F43088873D3006734F5 /* adium-offline.png */,
+				E71CB52B088480A400ACA68A /* addressbook.png */,
+				E721BDD108D4816700DF5773 /* but-add-card.png */,
+				E721BDD008D4816700DF5773 /* but-set-im.png */,
+				E721BDD308D4816700DF5773 /* but-set-pict.png */,
+				E721BDD208D4816700DF5773 /* but-find-ab.png */,
+				E703E40008D3C3630044A084 /* but-find-adium.png */,
+				E76AF0A00886C25200F803BB /* aim.png */,
+				E76AF0A40886C26D00F803BB /* icq.png */,
+				E76AF0A80886C27700F803BB /* msn.png */,
+				E714EC6D08C54496000BCD7D /* yim.png */,
+				E714EC6C08C54496000BCD7D /* jab.png */,
+			);
+			name = img;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E7A8978A0A8D1880006383FB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E7A897890A8D1880006383FB /* Adium Book */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E7A897A50A8D1880006383FB /* Build configuration list for PBXNativeTarget "Adium Book" */;
+			buildPhases = (
+				E7A8978A0A8D1880006383FB /* Headers */,
+				E7A8978B0A8D1880006383FB /* AppleScript */,
+				E7A8978D0A8D1880006383FB /* Resources */,
+				E7A897A00A8D1880006383FB /* Sources */,
+				E7A897A20A8D1880006383FB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			comments = "A free Mac OS X bridge application between Adium and Address Book, used to search, manage and keep your contacts in sync. http://aureliosoft.wordpress.com ";
+			dependencies = (
+			);
+			name = "Adium Book";
+			productInstallPath = "$(HOME)/Applications";
+			productName = Application;
+			productReference = E7A897AA0A8D1880006383FB /* Adium Book.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = E7A8975B0A8CE0D3006383FB /* Build configuration list for PBXProject "Adium Book" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Application */;
+			projectDirPath = "";
+			targets = (
+				E7A897890A8D1880006383FB /* Adium Book */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E7A8978D0A8D1880006383FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7A8978E0A8D1880006383FB /* InfoPlist.strings in Resources */,
+				E7A8978F0A8D1880006383FB /* addressbook.png in Resources */,
+				E7A897900A8D1880006383FB /* aim.png in Resources */,
+				E7A897910A8D1880006383FB /* icq.png in Resources */,
+				E7A897920A8D1880006383FB /* msn.png in Resources */,
+				E7A897930A8D1880006383FB /* adium.png in Resources */,
+				E7A897940A8D1880006383FB /* adium-offline.png in Resources */,
+				E7A897950A8D1880006383FB /* adiumbook.icns in Resources */,
+				E7A897960A8D1880006383FB /* jab.png in Resources */,
+				E7A897970A8D1880006383FB /* yim.png in Resources */,
+				E7A897980A8D1880006383FB /* MainMenu.nib in Resources */,
+				E7A897990A8D1880006383FB /* but-find-adium.png in Resources */,
+				E7A8979A0A8D1880006383FB /* but-set-im.png in Resources */,
+				E7A8979B0A8D1880006383FB /* but-add-card.png in Resources */,
+				E7A8979C0A8D1880006383FB /* but-find-ab.png in Resources */,
+				E7A8979D0A8D1880006383FB /* but-set-pict.png in Resources */,
+				E7A8979E0A8D1880006383FB /* but-reveal-ab.png in Resources */,
+				E7A8979F0A8D1880006383FB /* Adium Book Help in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E7A897A00A8D1880006383FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E7A897A10A8D1880006383FB /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E757E62708D3676200101427 /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E757E62808D3676200101427 /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E7A8975C0A8CE0D3006383FB /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Development;
+		};
+		E7A8975D0A8CE0D3006383FB /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Deployment;
+		};
+		E7A8975E0A8CE0D3006383FB /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Default;
+		};
+		E7A897A60A8D1880006383FB /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "Adium Book";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		E7A897A70A8D1880006383FB /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-bind_at_load";
+				OTHER_OSAFLAGS = "-x";
+				PRODUCT_NAME = "Adium Book";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		E7A897A80A8D1880006383FB /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "Adium Book";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E7A8975B0A8CE0D3006383FB /* Build configuration list for PBXProject "Adium Book" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7A8975C0A8CE0D3006383FB /* Development */,
+				E7A8975D0A8CE0D3006383FB /* Deployment */,
+				E7A8975E0A8CE0D3006383FB /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		E7A897A50A8D1880006383FB /* Build configuration list for PBXNativeTarget "Adium Book" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7A897A60A8D1880006383FB /* Development */,
+				E7A897A70A8D1880006383FB /* Deployment */,
+				E7A897A80A8D1880006383FB /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

@@ -55,6 +55,7 @@ a:hover  {
 body
 	{
 	font-family: "Lucida Grande", Arial, sans-serif;
+	padding-bottom	: 3em;
 	}
 #body h1
 	{
@@ -75,4 +76,8 @@ dt img
 li p
 	{
 	margin-bottom	: 1.5em;
+	}
+img.bordered
+	{
+	border		: 1px solid #ccc;
 	}

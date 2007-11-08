@@ -3,14 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>IBDocumentLocation</key>
-	<string>159 10 356 240 0 0 1280 1002 </string>
+	<string>-2 11 356 750 0 0 1280 1002 </string>
 	<key>IBEditorPositions</key>
 	<dict>
 		<key>29</key>
-		<string>263 234 336 44 0 0 1280 1002 </string>
+		<string>288 371 336 44 0 0 1280 1002 </string>
 	</dict>
 	<key>IBFramework Version</key>
-	<string>437.0</string>
+	<string>446.1</string>
 	<key>IBGroupedObjects</key>
 	<dict>
 		<key>13</key>
@@ -21,14 +21,6 @@
 			<string>1184</string>
 			<string>1185</string>
 		</array>
-		<key>14</key>
-		<array>
-			<string>941</string>
-			<string>1167</string>
-			<string>1166</string>
-			<string>1168</string>
-			<string>1169</string>
-		</array>
 		<key>15</key>
 		<array>
 			<string>1199</string>
@@ -37,25 +29,66 @@
 			<string>1202</string>
 			<string>1203</string>
 		</array>
-		<key>5</key>
+		<key>16</key>
 		<array>
-			<string>967</string>
-			<string>964</string>
-			<string>973</string>
-			<string>959</string>
-			<string>958</string>
+			<string>1313</string>
+			<string>1325</string>
+			<string>1335</string>
+			<string>1320</string>
+			<string>1330</string>
 		</array>
-		<key>6</key>
+		<key>17</key>
 		<array>
-			<string>967</string>
-			<string>964</string>
-			<string>973</string>
-			<string>959</string>
-			<string>958</string>
+			<string>1313</string>
+			<string>1325</string>
+			<string>1330</string>
+			<string>1335</string>
+			<string>1320</string>
+		</array>
+		<key>29</key>
+		<array>
+			<string>941</string>
+			<string>1166</string>
+			<string>1168</string>
+			<string>1169</string>
+		</array>
+		<key>32</key>
+		<array>
+			<string>942</string>
+			<string>938</string>
+		</array>
+		<key>34</key>
+		<array>
+			<string>1418</string>
+			<string>1125</string>
+			<string>1289</string>
+		</array>
+		<key>38</key>
+		<array>
+			<string>1378</string>
+			<string>1376</string>
+			<string>1377</string>
+			<string>1379</string>
+			<string>1380</string>
+		</array>
+		<key>39</key>
+		<array>
+			<string>969</string>
+			<string>963</string>
+		</array>
+		<key>40</key>
+		<array>
+			<string>1417</string>
+			<string>1143</string>
+			<string>1150</string>
+			<string>1151</string>
+			<string>1134</string>
 		</array>
 	</dict>
 	<key>IBLastGroupID</key>
-	<string>16</string>
+	<string>41</string>
+	<key>IBLockedObjects</key>
+	<array/>
 	<key>IBOpenObjects</key>
 	<array>
 		<integer>29</integer>
@@ -70,13 +103,13 @@
 			<key>guideLocations</key>
 			<array>
 				<string>Horizontal:327.000000</string>
-				<string>Horizontal:194.000000</string>
-				<string>Horizontal:448.000000</string>
-				<string>Horizontal:178.000000</string>
-				<string>Vertical:448.000000</string>
-				<string>Vertical:69.000000</string>
-				<string>Horizontal:253.000000</string>
-				<string>Horizontal:310.000000</string>
+				<string>Horizontal:21.000000</string>
+				<string>Horizontal:521.000000</string>
+				<string>Horizontal:240.000000</string>
+				<string>Vertical:524.000000</string>
+				<string>Vertical:373.000000</string>
+				<string>Horizontal:454.000000</string>
+				<string>Vertical:418.000000</string>
 			</array>
 			<key>guidesLocked</key>
 			<false/>
