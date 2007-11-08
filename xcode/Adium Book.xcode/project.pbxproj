@@ -5,12 +5,6 @@
 	};
 	objectVersion = 39;
 	objects = {
-		080E96DCFE201CFB7F000001 = {
-			fileRef = 29B97318FDCFA39411CA2CEA;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		080E96DDFE201D6D7F000001 = {
 			children = (
 				DA206CF3015C4E8B03C91932,
@@ -186,31 +180,13 @@
 		29B97317FDCFA39411CA2CEA = {
 			children = (
 				E71CB53D0884875700ACA68A,
-				29B97318FDCFA39411CA2CEA,
 				089C165CFE840E0CC02AAC07,
 				DA206CF4015C4E8B03C91932,
+				E757E62708D3676200101427,
 			);
 			isa = PBXGroup;
 			name = Resources;
 			path = "";
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		29B97318FDCFA39411CA2CEA = {
-			children = (
-				29B97319FDCFA39411CA2CEA,
-			);
-			isa = PBXVariantGroup;
-			name = MainMenu.nib;
-			path = "";
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		29B97319FDCFA39411CA2CEA = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
-			name = English;
-			path = English.lproj/MainMenu.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -263,7 +239,7 @@
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 				WRAPPER_EXTENSION = app;
 			};
-			comments = "A bridge application to keep Adium IM and Address Book data in sync";
+			comments = "A bridge application to keep Adium IM and Address Book contacts in sync";
 			dependencies = (
 			);
 			isa = PBXApplicationTarget;
@@ -287,6 +263,8 @@
 	<string>Adium Book</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>NSAppleScriptEnabled</key>
@@ -309,7 +287,6 @@
 		29B97328FDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
 			files = (
-				080E96DCFE201CFB7F000001,
 				089C165EFE840E0CC02AAC07,
 				E71CB52C088480A400ACA68A,
 				E76AF0A10886C25200F803BB,
@@ -317,8 +294,15 @@
 				E76AF0A90886C27700F803BB,
 				E76AF0F80886C54300F803BB,
 				E7959F44088873D3006734F5,
-				E7E69B3608A65C670001AF51,
 				E7E69B6908A6AD120001AF51,
+				E714EC6E08C54496000BCD7D,
+				E714EC6F08C54496000BCD7D,
+				E757E62908D3676200101427,
+				E703E40108D3C3630044A084,
+				E721BDD408D4816700DF5773,
+				E721BDD508D4816700DF5773,
+				E721BDD608D4816700DF5773,
+				E721BDD708D4816700DF5773,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +439,45 @@
 //E72
 //E73
 //E74
+		E703E40008D3C3630044A084 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = "but-find-adium.png";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E703E40108D3C3630044A084 = {
+			fileRef = E703E40008D3C3630044A084;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E714EC6C08C54496000BCD7D = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = jab.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E714EC6D08C54496000BCD7D = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = yim.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E714EC6E08C54496000BCD7D = {
+			fileRef = E714EC6C08C54496000BCD7D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E714EC6F08C54496000BCD7D = {
+			fileRef = E714EC6D08C54496000BCD7D;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		E71CB52B088480A400ACA68A = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.png;
@@ -474,15 +497,97 @@
 				E76AF0F70886C54300F803BB,
 				E7959F43088873D3006734F5,
 				E71CB52B088480A400ACA68A,
+				E721BDD108D4816700DF5773,
+				E721BDD008D4816700DF5773,
+				E721BDD308D4816700DF5773,
+				E721BDD208D4816700DF5773,
+				E703E40008D3C3630044A084,
 				E76AF0A00886C25200F803BB,
 				E76AF0A40886C26D00F803BB,
 				E76AF0A80886C27700F803BB,
-				E7E69B3508A65C670001AF51,
+				E714EC6D08C54496000BCD7D,
+				E714EC6C08C54496000BCD7D,
 			);
 			isa = PBXGroup;
 			name = img;
 			refType = 4;
 			sourceTree = "<group>";
+		};
+		E721BDD008D4816700DF5773 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = "but-set-im.png";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E721BDD108D4816700DF5773 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = "but-add-card.png";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E721BDD208D4816700DF5773 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = "but-find-ab.png";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E721BDD308D4816700DF5773 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = "but-set-pict.png";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E721BDD408D4816700DF5773 = {
+			fileRef = E721BDD008D4816700DF5773;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E721BDD508D4816700DF5773 = {
+			fileRef = E721BDD108D4816700DF5773;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E721BDD608D4816700DF5773 = {
+			fileRef = E721BDD208D4816700DF5773;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E721BDD708D4816700DF5773 = {
+			fileRef = E721BDD308D4816700DF5773;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E757E62708D3676200101427 = {
+			children = (
+				E757E62808D3676200101427,
+			);
+			isa = PBXVariantGroup;
+			name = MainMenu.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E757E62808D3676200101427 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = English.lproj/MainMenu.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E757E62908D3676200101427 = {
+			fileRef = E757E62708D3676200101427;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 		E76AF0A00886C25200F803BB = {
 			isa = PBXFileReference;
@@ -545,19 +650,6 @@
 		};
 		E7959F44088873D3006734F5 = {
 			fileRef = E7959F43088873D3006734F5;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E7E69B3508A65C670001AF51 = {
-			isa = PBXFileReference;
-			lastKnownFileType = image.png;
-			path = yahoo.png;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E7E69B3608A65C670001AF51 = {
-			fileRef = E7E69B3508A65C670001AF51;
 			isa = PBXBuildFile;
 			settings = {
 			};
