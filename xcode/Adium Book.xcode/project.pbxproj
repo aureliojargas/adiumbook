@@ -59,8 +59,7 @@
 			sourceTree = "<group>";
 		};
 		1058C7A1FEA54F0111CA2CBB = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = Cocoa.framework;
 			path = /System/Library/Frameworks/Cocoa.framework;
@@ -95,8 +94,7 @@
 //174
 		17587328FF379C6511CA2CBB = {
 			explicitFileType = wrapper.application;
-			fallbackIsa = PBXFileReference;
-			isa = PBXApplicationReference;
+			isa = PBXFileReference;
 			path = "Adium Book.app";
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
@@ -179,6 +177,7 @@
 		};
 		29B97317FDCFA39411CA2CEA = {
 			children = (
+				E786BC6D0A865E060047336A,
 				E71CB53D0884875700ACA68A,
 				089C165CFE840E0CC02AAC07,
 				DA206CF4015C4E8B03C91932,
@@ -202,8 +201,7 @@
 			sourceTree = "<group>";
 		};
 		29B97324FDCFA39411CA2CEA = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = AppKit.framework;
 			path = /System/Library/Frameworks/AppKit.framework;
@@ -211,8 +209,7 @@
 			sourceTree = "<absolute>";
 		};
 		29B97325FDCFA39411CA2CEA = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = Foundation.framework;
 			path = /System/Library/Frameworks/Foundation.framework;
@@ -255,8 +252,14 @@
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>Adium Book</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>Adium Book Help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>Adium Book Help</string>
 	<key>CFBundleIconFile</key>
 	<string>adiumbook</string>
+	<key>CFBundleIdentifier</key>
+	<string>net.aurelio.AdiumBook</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -264,7 +267,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>NSAppleScriptEnabled</key>
@@ -303,6 +306,8 @@
 				E721BDD508D4816700DF5773,
 				E721BDD608D4816700DF5773,
 				E721BDD708D4816700DF5773,
+				E786BC060A862FE40047336A,
+				E786BC740A865E060047336A,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -343,8 +348,6 @@
 //4A3
 //4A4
 		4A9504CCFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -358,8 +361,6 @@
 			name = Development;
 		};
 		4A9504CDFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -380,8 +381,7 @@
 //DA3
 //DA4
 		DA206CF1015C4E2903C91932 = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = AppleScriptKit.framework;
 			path = /System/Library/Frameworks/AppleScriptKit.framework;
@@ -493,6 +493,7 @@
 		};
 		E71CB53D0884875700ACA68A = {
 			children = (
+				E786BC050A862FE40047336A,
 				E7E69B6808A6AD120001AF51,
 				E76AF0F70886C54300F803BB,
 				E7959F43088873D3006734F5,
@@ -637,6 +638,32 @@
 		};
 		E76AF0F80886C54300F803BB = {
 			fileRef = E76AF0F70886C54300F803BB;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E786BC050A862FE40047336A = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			path = "but-reveal-ab.png";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E786BC060A862FE40047336A = {
+			fileRef = E786BC050A862FE40047336A;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E786BC6D0A865E060047336A = {
+			isa = PBXFileReference;
+			lastKnownFileType = folder;
+			path = "Adium Book Help";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E786BC740A865E060047336A = {
+			fileRef = E786BC6D0A865E060047336A;
 			isa = PBXBuildFile;
 			settings = {
 			};

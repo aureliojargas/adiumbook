@@ -1,0 +1,38 @@
+Adium Book Help
+
+
+%%% Hello,
+%%%
+%%% This is a txt2tags source file.
+%%% It can be converted to HTML, XHTML, LaTeX, Man Page and other formats.
+%%%
+%%% Download txt2tags now!
+%%% http://txt2tags.sf.net
+
+
+%!target: html
+%!style: help.css
+%!options: --css-sugar
+
+% Insert Apple Help required meta tags
+%!postproc: (</HEAD>)	'<meta name="AppleTitle" content="Adium Book Help">\n\1'
+%!postproc: (</HEAD>)	'<meta name="AppleIcon" content="Adium%20Book%20Help/icon16.png">\n\1'
+
+% Normalize Address Book's name
+%!postproc: AB_NAME	Address Book
+
+% Make image paths relative to the project's package
+%!preproc: '\[img/but-'	'[../but-'
+
+% Remove website-specific includes (note the space after ":")
+%!preproc: '^%!include: .*'	''
+
+  [img/adiumbook.png] 
+
+% Get the help contents from the website sources (no space after ":")
+%!include:/a/www/bin/as/adiumbook/help.t2t
+
+- For more information visit the program's site:
+  ""http://aurelio.net/bin/as/adiumbook""
+
+% Note: If a make a link to the website, Help Viewer tries to access it. Sucks.

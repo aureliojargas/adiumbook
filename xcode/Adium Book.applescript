@@ -51,9 +51,9 @@ Changing IM info on AB
 
 Adium must be Online
 
-	You *must* have Adium ON-LINE to use fully this program. If Adium is
-	offline it only finds very few contacts with poor details (i.e. no ICQ
-	names)
+	Adium *must* be online for the searches and reports to work 100%.
+	If Adium is offline it only finds very few contacts with poor details
+	(like no ICQ names)
 
 Image gotchas
 	
@@ -99,6 +99,9 @@ Adium versions
 		- Service IDs: AIM, Mac, ICQ, MSN, Yahoo!, Jabber
 		- set adiumStatus to my status type of the first Adium controller
 
+
+Tip: Monitor execution with Console.app to track for AB and Adium warnings
+
 *)
 
 -- The only properties that you may want to change
@@ -114,15 +117,18 @@ property abPicturesFolder : ""
 property adiumContacts : {0, 0} -- Found / Total
 property abContacts : {0, 0}
 property adiumOnline : true -- Changing here changes nothing
-property adiumServiceId : {aim:"AIM", mac:"Mac", icq:"ICQ", msn:"MSN", yim:"Yahoo!", jab:"Jabber"}
+property adiumServiceId : {aim:"AIM", mac:"Mac", icq:"ICQ", msn:"MSN", yim:"Yahoo!", jab:"Jabber", gtalk:"GTalk"}
 
 -- Some random text
+property myVersion : "1.2"
 property myUrl : "http://aurelio.net/bin/as/adiumbook/"
 property adiumUrl : "http://www.adiumx.com"
+property donateUrl : "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=verde%40aurelio%2enet&item_name=Adium%20Book&no_shipping=1&return=http%3a%2f%2faurelio%2enet%2fdonate%2dthanks%2ehtml&cn=Please%20leave%20a%20comment%20to%20me&tax=0&currency_code=USD&bn=PP%2dDonationsBF&charset=UTF%2d8"
 
 property tooltipAdiumOffline : "Adium is Offline. Please login or you'll have poor search results."
 property tooltipFindInAb : "Find this contact in Address Book"
 property tooltipFindInAdium : "Find this contact in Adium"
+property tooltipRevealInAb : "Reveal this contact's card in Address Book"
 property tooltipAddToAb : "Create a NEW CARD for this contact in Address Book"
 property tooltipSetAbIm : "Set the IM field in Address Book"
 property tooltipSetAbPicture : "Set the PICTURE in Address Book"
@@ -138,7 +144,7 @@ on myLog(theMessage, theLevel)
 	if theLevel is not greater than theLogLevel then log (theMessage)
 end myLog
 
--- It is a split('".", 1) on Adium person UID
+-- It is a split(".", 1) on Adium person UID
 -- Sample IDs: MSN.foo@bar.com, ICQ.123456
 on split_service_login(theID)
 	set AppleScript's text item delimiters to "."
@@ -153,7 +159,10 @@ on compose_adium_search_patterns(theData)
 	if icq of theData is not "" then set the end of searchPatterns to icq of adiumServiceId & "." & icq of theData
 	if msn of theData is not "" then set the end of searchPatterns to msn of adiumServiceId & "." & msn of theData
 	if yim of theData is not "" then set the end of searchPatterns to yim of adiumServiceId & "." & yim of theData
-	if jab of theData is not "" then set the end of searchPatterns to jab of adiumServiceId & "." & jab of theData
+	if jab of theData is not "" then
+		set the end of searchPatterns to jab of adiumServiceId & "." & jab of theData
+		set the end of searchPatterns to gtalk of adiumServiceId & "." & jab of theData
+	end if
 	if aim of theData is not "" then
 		set the end of searchPatterns to aim of adiumServiceId & "." & aim of theData
 		set the end of searchPatterns to mac of adiumServiceId & "." & aim of theData
@@ -232,7 +241,9 @@ on clear_details(theView)
 			delete tool tip of button "set_ab_picture"
 			delete tool tip of button "search_ab"
 		else
+			set enabled of button "reveal_ab" to false
 			set enabled of button "search_adium" to false
+			delete tool tip of button "reveal_ab"
 			delete tool tip of button "search_adium"
 		end if
 		
@@ -331,7 +342,7 @@ on search_ab_by_service_test(theService, theLogin)
 	set found to 0
 	tell application "Address Book"
 		-- There is any contact using this IM id?
-		if theService is in {aim of adiumServiceId, mac of adiumServiceId} then
+		if theService is in {aim, mac} of adiumServiceId then
 			set found to count (every person whose (value of AIM handles) contains theLogin)
 		else if theService is (icq of adiumServiceId) then
 			set found to count (every person whose (value of ICQ handles) contains theLogin)
@@ -339,7 +350,7 @@ on search_ab_by_service_test(theService, theLogin)
 			set found to count (every person whose (value of MSN handles) contains theLogin)
 		else if theService is (yim of adiumServiceId) then
 			set found to count of (every person whose (value of Yahoo handles) contains theLogin)
-		else if theService is (jab of adiumServiceId) then
+		else if theService is in {jab, gtalk} of adiumServiceId then
 			set found to count of (every person whose (value of Jabber handles) contains theLogin)
 		end if
 	end tell
@@ -351,7 +362,7 @@ on search_ab_by_service(theService, theLogin)
 	set thePeople to {}
 	tell application "Address Book"
 		-- There is any contact using this IM id?
-		if theService is in {aim of adiumServiceId, mac of adiumServiceId} then
+		if theService is in {aim, mac} of adiumServiceId then
 			set thePeople to (every person whose (value of AIM handles) contains theLogin)
 		else if theService is (icq of adiumServiceId) then
 			set thePeople to (every person whose (value of ICQ handles) contains theLogin)
@@ -359,7 +370,7 @@ on search_ab_by_service(theService, theLogin)
 			set thePeople to (every person whose (value of MSN handles) contains theLogin)
 		else if theService is (yim of adiumServiceId) then
 			set thePeople to (every person whose (value of Yahoo handles) contains theLogin)
-		else if theService is (jab of adiumServiceId) then
+		else if theService is in {jab, gtalk} of adiumServiceId then
 			set thePeople to (every person whose (value of Jabber handles) contains theLogin)
 		else
 			my myLog("** Unknown service: " & theService, 1)
@@ -555,7 +566,7 @@ on get_adium_person_details(thePersonID)
 			tell thePerson
 				set |name| of theInfo to long display name
 				set |picture| of theInfo to adiumPicturesFolder & thePersonID
-				if serviceID is in {aim of adiumServiceId, mac of adiumServiceId} then
+				if serviceID is in {aim, mac} of adiumServiceId then
 					set aim of theInfo to UID
 				else if serviceID is (icq of adiumServiceId) then
 					set icq of theInfo to UID
@@ -563,7 +574,7 @@ on get_adium_person_details(thePersonID)
 					set msn of theInfo to UID
 				else if serviceID is (yim of adiumServiceId) then
 					set yim of theInfo to UID
-				else if serviceID is (jab of adiumServiceId) then
+				else if serviceID is in {jab, gtalk} of adiumServiceId then
 					set jab of theInfo to UID
 				else
 					my myLog("** Unknown service: " & serviceID, 1)
@@ -591,21 +602,11 @@ on get_ab_person_details(thePersonID)
 				set |name| of theInfo to name
 				set nick of theInfo to nickname
 				set |picture| of theInfo to abPicturesFolder & thePictureFilename
-				try
-					set aim of theInfo to (value of first AIM Handle)
-				end try
-				try
-					set icq of theInfo to (value of first ICQ handle)
-				end try
-				try
-					set msn of theInfo to (value of first MSN handle)
-				end try
-				try
-					set yim of theInfo to (value of first Yahoo handle)
-				end try
-				try
-					set jab of theInfo to (value of first Jabber handle)
-				end try
+				if (count AIM handles) is not 0 then set aim of theInfo to (value of first AIM Handle)
+				if (count ICQ handles) is not 0 then set icq of theInfo to (value of first ICQ handle)
+				if (count MSN handles) is not 0 then set msn of theInfo to (value of first MSN handle)
+				if (count Yahoo handles) is not 0 then set yim of theInfo to (value of first Yahoo handle)
+				if (count Jabber handles) is not 0 then set jab of theInfo to (value of first Jabber handle)
 			end tell
 			exit repeat
 		end repeat
@@ -617,7 +618,7 @@ end get_ab_person_details
 on set_ab_im(abPerson, imService, imLogin)
 	tell application "Address Book"
 		tell (the first person whose id is abPerson)
-			if imService is in {aim of adiumServiceId, mac of adiumServiceId} then
+			if imService is in {aim, mac} of adiumServiceId then
 				if (count AIM handles) is 0 then
 					make new AIM Handle at beginning of AIM handles with properties {label:abImDefaultLabel, value:imLogin}
 				else
@@ -641,7 +642,7 @@ on set_ab_im(abPerson, imService, imLogin)
 				else
 					set value of first Yahoo handle to imLogin
 				end if
-			else if imService is (jab of adiumServiceId) then
+			else if imService is in {jab, gtalk} of adiumServiceId then
 				if (count Jabber handles) is 0 then
 					make new Jabber handle at beginning of Jabber handles with properties {label:abImDefaultLabel, value:imLogin}
 				else
@@ -709,43 +710,25 @@ on set_person_details_on_screen(theView, theInfo)
 		else
 			set enabled of button "search_adium" to true
 			set tool tip of button "search_adium" to tooltipFindInAdium
+			
+			set enabled of button "reveal_ab" to true
+			set tool tip of button "reveal_ab" to tooltipRevealInAb
 		end if
 		
-		-- the check/set is made one by one for visual pleasure 
-		-- (instead of turn all off then turn on each)
-		if aim of theInfo is not "" then
-			set enabled of button "aim" to true
-		else
-			set enabled of button "aim" to false
-		end if
+		-- Turn service icons and contents On/Off in a sequence
+		set enabled of button "aim" to (aim of theInfo is not "")
 		set content of text field "aim" to aim of theInfo
 		
-		if icq of theInfo is not "" then
-			set enabled of button "icq" to true
-		else
-			set enabled of button "icq" to false
-		end if
+		set enabled of button "icq" to (icq of theInfo is not "")
 		set content of text field "icq" to icq of theInfo
 		
-		if msn of theInfo is not "" then
-			set enabled of button "msn" to true
-		else
-			set enabled of button "msn" to false
-		end if
+		set enabled of button "msn" to (msn of theInfo is not "")
 		set content of text field "msn" to msn of theInfo
 		
-		if yim of theInfo is not "" then
-			set enabled of button "yim" to true
-		else
-			set enabled of button "yim" to false
-		end if
+		set enabled of button "yim" to (yim of theInfo is not "")
 		set content of text field "yim" to yim of theInfo
 		
-		if jab of theInfo is not "" then
-			set enabled of button "jab" to true
-		else
-			set enabled of button "jab" to false
-		end if
+		set enabled of button "jab" to (jab of theInfo is not "")
 		set content of text field "jab" to jab of theInfo
 	end tell
 end set_person_details_on_screen
@@ -957,6 +940,18 @@ on clicked theObject
 			set_person_details_on_screen(abView, get_ab_person_details(abPerson))
 		end if
 		
+	else if name of theObject is "reveal_ab" then
+		myLog("action: Reveal contact in AB", 1)
+		
+		-- Get person ID of the selected row
+		set personID to get_selected_person_id(abView)
+		if personID is "" then return -- no row selected
+		
+		tell application "Address Book"
+			set selection to person id personID
+			activate
+		end tell
+		
 	else if name of theObject is "add_to_ab" then
 		myLog("action: Add contact to AB", 1)
 		
@@ -1086,20 +1081,6 @@ on choose menu item theObject
 		auto_show_first_result(abView)
 		stop progress indicator "progress" of abView
 		
-		(* TODO		
-	else if name of theObject is "report_picture_copy" then
-		myLog("action: report picture copy", 1)
-		
-		clear_details(adiumView)
-		clear_search(adiumView)
-		
-		start progress indicator "progress" of adiumView
-		set_status_bar(adiumView, "Report: " & reportName)
-		--populate_table(abView, search_report_ab_no_picture())
-		populate_table(abView, {})
-			auto_show_first_result(abView)
-stop progress indicator "progress" of adiumView
-*)
 	else if name of theObject starts with "report_ab_service_" then
 		
 		set serviceID to (items -3 thru -1 of (name of theObject as text) as text)
@@ -1114,6 +1095,11 @@ stop progress indicator "progress" of adiumView
 		populate_table(abView, search_report_ab_with_service(serviceID))
 		auto_show_first_result(abView)
 		stop progress indicator "progress" of abView
+		
+	else if name of theObject is "donate" then
+		myLog("action: donate", 1)
+		
+		open location donateUrl
 		
 	else if name of theObject is "website" then
 		myLog("action: website", 1)
