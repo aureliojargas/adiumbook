@@ -1,4 +1,4 @@
-Adium Book Help
+APPNAME Help
 
 
 %%% Hello,
@@ -15,10 +15,14 @@ Adium Book Help
 %!options: --css-sugar
 
 % Insert Apple Help required meta tags
-%!postproc: (</HEAD>)	'<meta name="AppleTitle" content="Adium Book Help">\n\1'
-%!postproc: (</HEAD>)	'<meta name="AppleIcon" content="Adium%20Book%20Help/icon16.png">\n\1'
+%!postproc: (</HEAD>)	'<meta name="AppleTitle" content="APPNAME Help">\n\1'
+%!postproc: (</HEAD>)	'<meta name="AppleIcon" content="APPNAME%20Help/icon16.png">\n\1'
 
-% Normalize Address Book's name
+% Fill subject for author e-mail link
+%!postproc: (mailto:verde@aurelio.net)		'\1?subject=APPNAME'
+
+% Normalize names
+%!postproc: APPNAME	AdiumBook
 %!postproc: AB_NAME	Address Book
 
 % Make image paths relative to the project's package
@@ -26,11 +30,9 @@ Adium Book Help
 
 % Borderer images
 %!postproc: '(="img/(stats|multi).png")'	'\1 class="bordered"'
-%!postproc: '(="img/reports.png")'	'\1 class="bordered"'
-%!postproc: '(="img/click-drag.png")'	'\1 class="bordered"'
+%!postproc: '(="img/reports.png")'		'\1 class="bordered"'
+%!postproc: '(="img/click-drag.png")'		'\1 class="bordered"'
 
-% Fill subject for author e-mail link
-%!postproc: (mailto:verde@aurelio.net)		'\1?subject=Adium%20Book'
 
   [img/adiumbook.png] 
 
@@ -43,9 +45,9 @@ Adium Book Help
 
 - Support for multiple accounts in AB_NAME view - Finally!
 
-- New menu item Report > Yous statistics
+- New menu item Report > Your statistics
 
-- New menu item Adium Book > Sponsor new features
+- New menu item APPNAME > Sponsor new features
 
 - The Set IM button now creates a new field instead overwriting existent data
 
@@ -56,7 +58,7 @@ Adium Book Help
 
 Enjoyed the new features? Want to see more on the next release?
 
-So please support the Adium Book project, clicking on the
+So please support the APPNAME project, clicking on the
 //Sponsor new features// menu item.
 
 = Tips & Tricks =
@@ -82,7 +84,7 @@ So please support the Adium Book project, clicking on the
 - When you launch this application,
   **both Adium and AB_NAME are also launched**
   (if they aren't already running).
-  Adium Book needs them.
+  APPNAME needs them.
 
 - To **fully integrate the applications**, set up Adium to get the
   contact's information from AB_NAME (picture and name).
@@ -90,7 +92,8 @@ So please support the Adium Book project, clicking on the
 
   - Import my contacts' names from the Address Book
   - Use Address Book images as contacts' icons
-  - Consolidate contacts listed in the card
+  - Combine contacts listed on a single card
+    (or //Consolidate contacts listed in the card// for older versions)
 
 
 = Buttons =[buttons]
@@ -128,7 +131,7 @@ with no IM" report (see [Reports #reports]).
 **Note:** This button really sets the AB_NAME card IM field. It
 doesn't overwrite the previous contents (if any), but creates a new
 field.
-(//In Adium Book version 1.2 and older, it was an overwrite operation.//)
+(//In APPNAME version 1.2 and older, it was an overwrite operation.//)
 : [img/but-set-pict.png] Copy the contact's picture from Adium to AB_NAME.
 This button sets the picture of the selected AB_NAME contact
 using the picture of the selected Adium contact. In simple
@@ -182,13 +185,13 @@ operation cannot be undone.
   who have one or more IM informed on the AB_NAME card, but you
   haven't them in your Adium contact list. You know the girl, maybe
   she's online, but you can't talk to her because she's not on your
-  list. Adium Book helps you to get social!
+  list. APPNAME helps you to get social!
 + 
 - **Your statistics** (Command-S)
 
   A nice report with your usage statistics. It shows how many
   searches, reports and actions you have made so far. Based on that
-  numbers, it shows the estimated total time Adium Book saved you from
+  numbers, it shows the estimated total time APPNAME saved you from
   doing manual and boring tasks on both Adium and AB_NAME.
 
   [img/stats.png] 
@@ -200,12 +203,7 @@ Contact the author in verde@aurelio.net.
 
 Visit the program's website and leave a comment:
 
-- http://aureliosoft.wordpress.com/adium-book/
+- http://aurelio.net/soft/adiumbook
 -
 
 Enjoy!
-
-%- ""http://aureliosoft.wordpress.com/adium-book/""
-
-
-% Note: If a make a link to the website, Help Viewer tries to access it. Sucks.
