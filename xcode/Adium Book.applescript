@@ -128,6 +128,7 @@ property lastReminder : 0
 property magicWord : "" -- Mistery!
 
 -- Some random text
+property requiredAdiumVersion : "1.2"
 property myVersion : "1.3.1" -- not used
 property myUrl : "http://aurelio.net/soft/adiumbook/"
 property adiumUrl : "http://www.adiumx.com"
@@ -141,6 +142,8 @@ property tooltipAddToAb : "Create a NEW CARD for this contact in Address Book"
 property tooltipSetAbIm : "Set the IM field in Address Book"
 property tooltipSetAbPicture : "Set the PICTURE in Address Book"
 
+property msgWrongAdiumVersion : "Unsupported Adium version."
+property msgWrongAdiumVersionDetails : "Your current version of Adium is unsupported. Please upgrade to the most recent version of Adium, or use the older AdiumBook version 1.3."
 property msgSelectPersonToSetAbInfo : "No contact selected in Address Book."
 property msgSelectPersonToSetAbInfoDetails : "To set somebody's IM or picture, first you need to select the contact on the Address Book view."
 property msgPersonAlreadyInAb : "This contact is already added."
@@ -1009,6 +1012,13 @@ end will finish launching
 on awake from nib theObject
 	myLog("event: awake from nib", 1)
 	
+	-- Check Adium version
+	set currentAdiumVersion to version of application "Adium" as string
+	if currentAdiumVersion is less than requiredAdiumVersion then
+		display alert msgWrongAdiumVersion as warning message msgWrongAdiumVersionDetails & return & return & "Expected Adium version " & requiredAdiumVersion & ", got " & currentAdiumVersion default button "Quit" attached to window "main"
+		return
+	end if
+	
 	-- Setting here works fine. Setting on property definition gets MY home path hardcoded...
 	set adiumPicturesFolder to POSIX path of (path to library folder from user domain) & "Caches/Adium/Default/"
 	set abPicturesFolder to POSIX path of (path to application support from user domain) & "AddressBook/Images/"
@@ -1366,6 +1376,9 @@ on alert ended theObject with reply withReply
 	if button returned of withReply is "Donate Now" then
 		myLog("alert button: donate", 1)
 		open location donateUrl
+		
+	else if button returned of withReply is "Quit" then
+		tell me to quit
 	end if
 	
 end alert ended
