@@ -99,12 +99,15 @@ Adium versions
 	>= 1.2:
 		- The AppleScript support was completely rewritten, breaking everything
 
-Tip: Monitor execution with Console.app to track for AB and Adium warnings
-Tip: Comment log calls: ^(\t+(my )*mylog\(.*, [1-5]\))      -- \1
+Tips
+	Monitor execution with Console.app to track for AB and Adium warnings
+	Comment log calls: ^(\t+)((my )*mylog\(.*, [1-5]\))      \1--\2
+	set personID to contents of data cell "id" of selected data row of table view 1 of scroll view 1 of theView
+	set personLogin to contents of data cell "nick" of selected data row of table view 1 of scroll view 1 of theView
 *)
 
 -- The only properties that you may want to change
-property theLogLevel : 0 -- Zero: no log, 1: informative log, 2: detailed log, 3: ugly log
+property theLogLevel : 3 -- Zero: no log, 1: informative log, 2: detailed log, 3: ugly log
 property abImDefaultLabel : "home" -- Used by the "Set IM" button (home, work, other)
 
 
@@ -116,6 +119,7 @@ property abPicturesFolder : ""
 property adiumContacts : {0, 0} -- Found / Total
 property abContacts : {0, 0}
 property adiumOnline : true -- Changing here changes nothing
+property adiumFlapping : false -- Changing here changes nothing
 property adiumServiceId : {aim:"AIM", mac:"Mac", icq:"ICQ", msn:"MSN", yim:"Yahoo!", jab:"Jabber", gtalk:"GTalk"}
 
 -- The statistics
@@ -126,21 +130,25 @@ property counterSet : 0
 property counterAdd : 0
 property lastReminder : 0
 property magicWord : "" -- Mistery!
+property quack : ""
 
 -- Some random text
 property requiredAdiumVersion : "1.2"
-property myVersion : "1.3.1" -- not used
+property myVersion : "1.4" -- not used
 property myUrl : "http://aurelio.net/soft/adiumbook/"
 property adiumUrl : "http://www.adiumx.com"
+property issueUrl : "http://code.google.com/p/adiumbook/issues/list"
 property donateUrl : "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=verde%40aurelio%2enet&item_name=AdiumBook&no_shipping=1&return=http%3a%2f%2faurelio%2enet%2fdonate%2dthanks%2ehtml&cn=Please%20leave%20a%20comment%20to%20me&tax=0&currency_code=USD&bn=PP%2dDonationsBF&charset=UTF%2d8"
 
 property tooltipAdiumOffline : "Adium is Offline. Please login or you'll have poor search results."
+property tooltipAdiumOnline : "Quack!"
 property tooltipFindInAb : "Find this contact in Address Book"
 property tooltipFindInAdium : "Find this contact in Adium"
 property tooltipRevealInAb : "Reveal this contact's card in Address Book"
 property tooltipAddToAb : "Create a NEW CARD for this contact in Address Book"
-property tooltipSetAbIm : "Set the IM field in Address Book"
-property tooltipSetAbPicture : "Set the PICTURE in Address Book"
+property tooltipSetAbIm : "Set the IM field in Address Book (will append, preserving any existing contents)"
+property tooltipSetAbPicture : "Set the PICTURE in Address Book (will override any existing picture)"
+property tooltipCopyImClipboard : "Right click here to copy this IM to the clipboard"
 
 property msgWrongAdiumVersion : "Unsupported Adium version."
 property msgWrongAdiumVersionDetails : "Your current version of Adium is unsupported. Please upgrade to the most recent version of Adium, or use the older AdiumBook version 1.3."
@@ -163,6 +171,7 @@ on populate_popup(thePopup, theList)
 	repeat with i from 1 to count of theList
 		make new menu item at the end of menu items of menu of thePopup with properties {title:item i of theList, enabled:true}
 	end repeat
+	set tool tip of thePopup to tooltipCopyImClipboard
 end populate_popup
 
 on seconds_to_string(s)
@@ -204,14 +213,15 @@ on compose_adium_search_patterns(theData)
 	end repeat
 	repeat with thisLogin in aim of theData
 		set the end of searchPatterns to {aim of adiumServiceId, thisLogin}
+		set the end of searchPatterns to {aim of adiumServiceId, (words in thisLogin) as text} -- no spaces (AIM ignores them)
 		set the end of searchPatterns to {mac of adiumServiceId, thisLogin}
 	end repeat
-	myLog(searchPatterns, 3)
+	--myLog(searchPatterns, 3)
 	return searchPatterns
 end compose_adium_search_patterns
 
 on save_defaults()
-	myLog("action: save defaults", 2)
+	--myLog("action: save defaults", 2)
 	
 	tell user defaults -- save current state
 		set contents of default entry "counterSearch" to counterSearch
@@ -223,7 +233,7 @@ on save_defaults()
 end save_defaults
 
 on set_adium_status()
-	myLog("action: set adium on/offline status", 2)
+	--myLog("action: set adium on/offline status", 2)
 	
 	set currentStatus to adiumOnline
 	
@@ -236,11 +246,16 @@ on set_adium_status()
 	
 	if adiumOnline is not currentStatus then
 		if not adiumOnline then
-			set image of image view "adium icon" of adiumView to load image "adium-offline"
-			set tool tip of image view "adium icon" of adiumView to tooltipAdiumOffline
+			set image of button "adium_icon" of adiumView to load image "adium-offline"
+			set tool tip of button "adium_icon" of adiumView to tooltipAdiumOffline
 		else
-			set image of image view "adium icon" of adiumView to load image "adium"
-			delete tool tip of image view "adium icon" of adiumView
+			-- When Adium became online, flap once and quack
+			set image of button "adium_icon" of adiumView to load image "adium-flap"
+			play quack
+			delay 1
+			set image of button "adium_icon" of adiumView to load image "adium-online"
+			set adiumFlapping to false
+			set tool tip of button "adium_icon" of adiumView to tooltipAdiumOnline
 		end if
 	end if
 end set_adium_status
@@ -335,7 +350,7 @@ on clear_search(theView)
 end clear_search
 
 on clear_details(theView)
-	myLog("action: clear details", 2)
+	--myLog("action: clear details", 2)
 	
 	set viewName to (name of theView as text)
 	tell box "details" of theView
@@ -357,7 +372,7 @@ on clear_details(theView)
 end clear_details
 
 on clear_table(theView)
-	myLog("action: clear table", 2)
+	--myLog("action: clear table", 2)
 	
 	if name of theView as text is "adium" then
 		set item 1 of adiumContacts to 0
@@ -374,7 +389,7 @@ end clear_table
 -----------------------------------------------------
 
 on populate_table(theView, theNewData)
-	myLog("action: populate table", 2)
+	--myLog("action: populate table", 2)
 	
 	set_box_totals(theView, count of theNewData)
 	set statusMessage to format_totals(get_box_totals(theView))
@@ -414,7 +429,7 @@ on search_ab(theSearchText)
 	clear_details(abView)
 	clear_table(abView)
 	set_status_bar(abView, "Searching...")
-	populate_table(abView, search_ab_by_text(theSearchText))
+	populate_table(abView, search_ab_name_nick(theSearchText))
 	auto_show_first_result(abView)
 	set_status_bar(abView, "Search results")
 	stop progress indicator "progress" of abView
@@ -427,33 +442,14 @@ on search_adium_by_service_test(theData)
 	return found is greater than 0
 end search_adium_by_service_test
 
--- Usually just one person, from Find AB contact in Adium
-on search_adium_by_service(theData)
-	set theResults to {}
-	set {serviceName, contactLogin} to theData
-	
-	tell application "Adium"
-		
-		-- Find all login matches then filter for the specified service
-		repeat with thisContact in (every contact whose title is contactLogin)
-			if title of service of account of thisContact is serviceName then
-				set the end of theResults to {nick:contactLogin, |id|:id of account of thisContact, |name|:display name of thisContact}
-			end if
-		end repeat
-		
-		-- set theResults to {id of account, title, display name} of (every contact of (every account of service serviceName) whose title is contactLogin) 
-		-- This works but returns double lists for each item, breaking convert_results_to_datasource_record()
-		
-	end tell
-	return theResults
-end search_adium_by_service
-
 on search_ab_by_service_test(theService, theLogin)
 	set found to 0
 	tell application "Address Book"
 		-- There is any contact using this IM id?
 		if theService is in {aim, mac} of adiumServiceId then
-			set found to count (every person whose (value of AIM handles) contains theLogin)
+			ignoring white space -- XXX not working, needed for AIM
+				set found to count (every person whose (value of AIM handles) contains theLogin)
+			end ignoring
 		else if theService is (icq of adiumServiceId) then
 			set found to count (every person whose (value of ICQ handles) contains theLogin)
 		else if theService is (msn of adiumServiceId) then
@@ -467,31 +463,23 @@ on search_ab_by_service_test(theService, theLogin)
 	return found is greater than 0
 end search_ab_by_service_test
 
-on search_ab_by_service(theService, theLogin)
+on search_ab_text(theLogin)
 	set theResults to {}
-	set thePeople to {}
 	tell application "Address Book"
-		-- There is any contact using this IM id?
-		if theService is in {aim, mac} of adiumServiceId then
-			set thePeople to (every person whose (value of AIM handles) contains theLogin)
-		else if theService is (icq of adiumServiceId) then
-			set thePeople to (every person whose (value of ICQ handles) contains theLogin)
-		else if theService is (msn of adiumServiceId) then
-			set thePeople to (every person whose (value of MSN handles) contains theLogin)
-		else if theService is (yim of adiumServiceId) then
-			set thePeople to (every person whose (value of Yahoo handles) contains theLogin)
-		else if theService is in {jab, gtalk} of adiumServiceId then
-			set thePeople to (every person whose (value of Jabber handles) contains theLogin)
-		else
-			my myLog("** Unknown service: " & theService, 0)
-		end if
-		repeat with thisPerson in thePeople
-			tell thisPerson to set the end of theResults to {|id|:id, nick:nickname, |name|:name}
-		end repeat
+		ignoring white space -- XXX not working, needed for AIM
+			set theResults to {id, nickname, name} of (every person whose Â
+				((value of AIM handles) contains theLogin or Â
+					(value of ICQ handles) contains theLogin or Â
+					(value of MSN handles) contains theLogin or Â
+					(value of Yahoo handles) contains theLogin or Â
+					(value of Jabber handles) contains theLogin or Â
+					(value of emails) contains theLogin or Â
+					name contains theLogin or Â
+					nickname contains theLogin))
+		end ignoring
 	end tell
-	return theResults
-end search_ab_by_service
-
+	return convert_results_to_datasource_record(theResults)
+end search_ab_text
 
 
 -- Routines to find people who match the given text pattern
@@ -507,10 +495,40 @@ on convert_results_to_datasource_record(theResults)
 	return theRecords
 end convert_results_to_datasource_record
 
+on remove_dups_from_datasource_record(theRecords)
+	set uniqueRecords to {}
+	set uniqueIDs to {}
+	repeat with i from 1 to count of theRecords
+		if (|id| of item i of theRecords) is not in uniqueIDs then
+			set the end of uniqueRecords to item i of theRecords
+			set the end of uniqueIDs to |id| of item i of theRecords
+		end if
+	end repeat
+	return uniqueRecords
+end remove_dups_from_datasource_record
+
+on remove_dups_from_list(theList)
+	set ret to {}
+	repeat with i from 1 to count of theList
+		if item i of theList is not in ret then set end of ret to item i of theList
+	end repeat
+	return ret
+end remove_dups_from_list
+
+on remove_empty_items(theList)
+	set ret to {}
+	repeat with i from 1 to count theList
+		if theList's item i is not in {missing value, ""} then set end of ret to theList's item i as text
+	end repeat
+	return ret
+end remove_empty_items
+
 on search_adium_by_text(theSearchText)
 	tell application "Adium"
 		if theSearchText is not "" then
-			set theResults to {id of account, title, display name} of (every contact whose (title contains theSearchText) or (display name contains theSearchText))
+			ignoring white space -- XXX not working, needed for AIM
+				set theResults to {id of account, title, display name} of (every contact whose (title contains theSearchText) or (display name contains theSearchText))
+			end ignoring
 		else
 			set theResults to {id of account, title, display name} of every contact
 		end if
@@ -518,7 +536,9 @@ on search_adium_by_text(theSearchText)
 	return convert_results_to_datasource_record(theResults)
 end search_adium_by_text
 
-on search_ab_by_text(theSearchText)
+
+
+on search_ab_name_nick(theSearchText)
 	tell application "Address Book"
 		if theSearchText is not "" then
 			set theResults to {id, nickname, name} of (every person whose (nickname contains theSearchText) or (name contains theSearchText))
@@ -527,7 +547,7 @@ on search_ab_by_text(theSearchText)
 		end if
 	end tell
 	return convert_results_to_datasource_record(theResults)
-end search_ab_by_text
+end search_ab_name_nick
 
 on search_report_ab_no_im()
 	tell application "Address Book"
@@ -545,9 +565,9 @@ on search_report_ab_no_picture()
 	tell application "Address Book"
 		repeat with i from 1 to (count people)
 			tell item i of people
-				my myLog("searching for " & name, 2)
+				--my myLog("searching for " & name, 2)
 				if not (exists image) then
-					my myLog("no picture found", 3)
+					--my myLog("no picture found", 3)
 					set the end of thePeople to {|id|:id, nick:nickname, |name|:name}
 				end if
 			end tell
@@ -603,30 +623,37 @@ on search_report_not_in_ab()
 	
 	-- Search one by one in AB
 	repeat with i from 1 to (count of serviceNames)
-		myLog("searching for " & (item i of contactLogins), 2)
+		--myLog("searching for " & (item i of contactLogins), 2)
+		
+		set content of progress indicator "progress_report" of adiumView to i
 		if not search_ab_by_service_test(item i of serviceNames, item i of contactLogins) then
-			myLog("not found", 3)
+			--myLog("not found", 3)
 			set the end of reportResults to {|id|:item i of accountIds, nick:item i of contactLogins, |name|:item i of displayNames}
 		end if
-		
-		-- TODO reverse counter from (count every contact) to zero, near spin wheel, so the user know something is happen
-		-- TODO or a full progress bar since we know the exact number of entries
-		-- TODO do the same for the AB search
-		
 	end repeat
 	
 	return reportResults
 end search_report_not_in_ab
 
+
+-- Handler for next search_report_not_in_adium because can't call progress inside "tell AB"...
+on set_ab_progress(i)
+	set content of progress indicator "progress_report" of abView to i
+end set_ab_progress
+
 -- Results a data-source-ready list of AB people not found in Adium
 on search_report_not_in_adium()
 	set reportResults to {}
 	tell application "Address Book"
+		set i to 0
 		repeat with thisPerson in every person
+			set i to i + 1
+			my set_ab_progress(i)
+			
 			tell thisPerson
 				-- Search only if AB contact has at least one IM login
 				if AIM handles & ICQ handles & MSN handles & Yahoo handles & Jabber handles is not {} then
-					my myLog("searching for " & name, 2)
+					--my myLog("searching for " & name, 2)
 					
 					-- Compose Adium-like search patterns
 					set userInfo to {aim:"", icq:"", msn:"", yim:"", jab:""}
@@ -648,7 +675,7 @@ on search_report_not_in_adium()
 					
 					-- Person not found, add to results
 					if found is false then
-						my myLog("not found", 3)
+						--my myLog("not found", 3)
 						set thisPersonInfo to {|id|:id, nick:nickname, |name|:name}
 						set the end of reportResults to thisPersonInfo
 					end if
@@ -720,6 +747,14 @@ on get_ab_person_details(thePersonID)
 	return theInfo
 end get_ab_person_details
 
+on get_ab_person_emails(thePersonID)
+	tell application "Address Book"
+		set theEmails to value of emails of (every person whose id is thePersonID)
+	end tell
+	if theEmails is not {} then set theEmails to item 1 of theEmails
+	return theEmails
+end get_ab_person_emails
+
 on set_ab_im(abPerson, imService, imLogin)
 	tell application "Address Book"
 		tell (the first person whose id is abPerson)
@@ -728,11 +763,11 @@ on set_ab_im(abPerson, imService, imLogin)
 			else if imService is (icq of adiumServiceId) then
 				make new ICQ handle at end of ICQ handles with properties {label:abImDefaultLabel, value:imLogin}
 			else if imService is (msn of adiumServiceId) then
-				make new MSN handle at beginning of MSN handles with properties {label:abImDefaultLabel, value:imLogin}
+				make new MSN handle at end of MSN handles with properties {label:abImDefaultLabel, value:imLogin}
 			else if imService is (yim of adiumServiceId) then
-				make new Yahoo handle at beginning of Yahoo handles with properties {label:abImDefaultLabel, value:imLogin}
+				make new Yahoo handle at end of Yahoo handles with properties {label:abImDefaultLabel, value:imLogin}
 			else if imService is in {jab, gtalk} of adiumServiceId then
-				make new Jabber handle at beginning of Jabber handles with properties {label:abImDefaultLabel, value:imLogin}
+				make new Jabber handle at end of Jabber handles with properties {label:abImDefaultLabel, value:imLogin}
 			end if
 		end tell
 	end tell
@@ -752,7 +787,7 @@ end copy_adium_picture_to_ab
 -- XXX It doesn't use clear_details() because doing "by hand" it appears to be faster for the user
 
 on set_person_details_on_screen(theView, theInfo)
-	myLog("action: set details on screen", 2)
+	--myLog("action: set details on screen", 2)
 	
 	set viewName to (name of theView as text)
 	
@@ -768,10 +803,12 @@ on set_person_details_on_screen(theView, theInfo)
 		
 		-- Documentation said we must always del the references manually
 		delete image of image view "picture"
-		delete tool tip of image view "picture"
+		delete tool tip of button "reveal_finder"
+		set enabled of button "reveal_finder" to false
 		try
 			set image of image view "picture" to load image |picture| of theInfo
-			set tool tip of image view "picture" to |picture| of theInfo
+			set tool tip of button "reveal_finder" to |picture| of theInfo
+			set enabled of button "reveal_finder" to true
 		end try
 		
 		set content of text field "name" to |name| of theInfo
@@ -880,9 +917,9 @@ on set_person_details_on_screen(theView, theInfo)
 end set_person_details_on_screen
 
 on get_person_details_from_screen(theView)
-	myLog("action: get details from screen", 2)
+	--myLog("action: get details from screen", 2)
 	
-	set theInfo to {|name|:"", nick:"", |picture|:"", aim:"", icq:"", msn:"", yim:"", jab:""}
+	set theInfo to {|id|:"", |name|:"", nick:"", |picture|:"", aim:"", icq:"", msn:"", yim:"", jab:""}
 	set viewName to (name of theView as text)
 	
 	tell box "details" of theView
@@ -930,7 +967,7 @@ end get_selected_person_info
 
 -- Select the first table entry and show his/her details
 on auto_show_first_result(theView)
-	myLog("action: auto show first result", 2)
+	--myLog("action: auto show first result", 2)
 	
 	-- Exit if the table is empty
 	if (count of data rows of data source of table view 1 of scroll view 1 of theView) is 0 then return
@@ -953,7 +990,7 @@ end auto_show_first_result
 
 
 on show_details_for_selected_result(theObject)
-	myLog("action: show contact details", 2)
+	--myLog("action: show contact details", 2)
 	
 	-- Get person ID of the selected row
 	if selected data rows of theObject is {} then return -- no row selected
@@ -982,7 +1019,7 @@ end show_details_for_selected_result
 *)
 
 on will finish launching theObject
-	myLog("event: will finish launching", 1)
+	--myLog("event: will finish launching", 1)
 	(*
 	User Defaults:
 	In AppleScript Studio, global and property values are not retained between program executions.
@@ -1010,7 +1047,7 @@ end will finish launching
 
 -- Init process: set global properties and create/link the data sources
 on awake from nib theObject
-	myLog("event: awake from nib", 1)
+	--myLog("event: awake from nib", 1)
 	
 	-- Check Adium version
 	set currentAdiumVersion to version of application "Adium" as string
@@ -1024,8 +1061,8 @@ on awake from nib theObject
 	set abPicturesFolder to POSIX path of (path to application support from user domain) & "AddressBook/Images/"
 	
 	-- Handy shortcuts for each half of the screen
-	set adiumView to view "adium" of window "main"
-	set abView to view "ab" of window "main"
+	set adiumView to view "adium" of split view 1 of window "main"
+	set abView to view "ab" of split view 1 of window "main"
 	
 	-- Create data sources
 	set adiumDataSource to make new data source at end of data sources with properties {name:"adium_table"}
@@ -1047,23 +1084,26 @@ on awake from nib theObject
 		set sorted to true
 		set sort column to data column "name"
 	end tell
-	myLog("init: data sources created", 2)
+	--myLog("init: data sources created", 2)
 	
 	-- Connect our new (empty) data sources to the tale views
 	set data source of table view 1 of scroll view 1 of adiumView to adiumDataSource
 	set data source of table view 1 of scroll view 1 of abView to abDataSource
-	myLog("init: data sources linked to table views", 2)
+	--myLog("init: data sources linked to table views", 2)
 	
 	-- set total count & adium status
 	set_box_totals(adiumView, 0)
 	set_box_totals(abView, 0)
 	set_adium_status()
-	myLog("init: contacts count & Adium status OK", 2)
+	--myLog("init: contacts count & Adium status OK", 2)
+	
+	-- load the Quack
+	set quack to load sound "Inflate"
 	
 	-- Initialize & Populate tables
 	search_adium("")
 	search_ab("")
-	myLog("init: done", 2)
+	--myLog("init: done", 2)
 	
 end awake from nib
 
@@ -1071,63 +1111,71 @@ end awake from nib
 -- Button or table clicked
 
 on clicked theObject
-	myLog("event: clicked", 1)
+	--myLog("event: clicked", 1)
 	
 	if name of theObject is "results" then
-		myLog("clicked: table row", 1)
+		--myLog("clicked: table row", 1)
 		
 		show_details_for_selected_result(theObject)
 		
 	else if name of theObject is "search_adium" then
-		myLog("clicked: button search in adium", 1)
-		myLog("action: search AB contact in Adium", 2)
+		--myLog("clicked: button search in adium", 1)
+		--myLog("action: search AB contact in Adium", 2)
 		
-		-- Get person ID of the selected row
-		set personID to get_selected_person_id(abView)
-		if personID is "" then return -- no row selected
-		
-		-- TODO search by nick also (case no IM number specified in AB)
-		
+		-- Get the info of the current AB contact
+		set rowInfo to get_selected_person_info(abView)
+		if rowInfo is "" then return -- no row selected
 		set theData to get_person_details_from_screen(abView)
-		set searchPatterns to compose_adium_search_patterns(theData)
+		set |id| of theData to |id| of rowInfo
+		set nick of theData to nick of rowInfo
+		set |name| of theData to |name| of rowInfo
 		
 		-- Attention to the command order (fine tunned, appears to be faster)
 		-- Leave all non user-noticeable commands to the end
+		set_adium_status()
 		start progress indicator "progress" of adiumView
 		
 		clear_details(adiumView)
 		clear_search(adiumView)
 		set_status_bar(adiumView, "Searching...")
 		
-		set foundPeople to {}
-		repeat with searchPattern in searchPatterns
-			set theResults to search_adium_by_service(searchPattern)
-			if theResults is not {} then set foundPeople to foundPeople & theResults
-		end repeat
+		-- Compose the list of patterns
+		set searchPatterns to (aim of theData) & (icq of theData) & (msn of theData) & (yim of theData) & (jab of theData)
+		set searchPatterns to searchPatterns & get_ab_person_emails(|id| of theData)
+		set the end of searchPatterns to |name| of theData
+		set the end of searchPatterns to nick of theData
+		set searchPatterns to remove_empty_items(remove_dups_from_list(searchPatterns))
+		--myLog(searchPatterns, 2)
 		
-		populate_table(adiumView, foundPeople)
+		-- Search for all patterns in Adium, remove duplicates and populate table
+		set searchResults to {}
+		repeat with searchPattern in searchPatterns
+			set searchResults to searchResults & search_adium_by_text(searchPattern)
+		end repeat
+		populate_table(adiumView, remove_dups_from_datasource_record(searchResults))
+		
 		auto_show_first_result(adiumView)
 		set_status_bar(adiumView, "Search AB contact in Adium")
 		stop progress indicator "progress" of adiumView
 		set counterSearch to counterSearch + 1
-		set_adium_status()
 		
 	else if name of theObject is "search_ab" then
-		myLog("action: user search in ab", 1)
+		--myLog("action: user search in ab", 1)
 		
 		-- Get contact info for the selected row
 		set adiumInfo to get_selected_person_info(adiumView)
 		if adiumInfo is "" then return -- no row selected
-		set serviceName to get_adium_service(|id| of adiumInfo)
 		set contactLogin to nick of adiumInfo
+		set contactName to |name| of adiumInfo
 		
-		myLog("AB search pattern: " & serviceName & " " & contactLogin, 3)
+		--myLog("AB search pattern: " & contactLogin & ", " & contactName, 3)
 		
 		start progress indicator "progress" of abView
 		clear_details(abView)
 		clear_search(abView)
 		set_status_bar(abView, "Searching...")
-		populate_table(abView, search_ab_by_service(serviceName, contactLogin))
+		set searchResults to search_ab_text(contactLogin) & search_ab_text(contactName)
+		populate_table(abView, remove_dups_from_datasource_record(searchResults))
 		auto_show_first_result(abView)
 		set_status_bar(abView, "Search Adium contact in AB")
 		stop progress indicator "progress" of abView
@@ -1139,7 +1187,7 @@ on clicked theObject
 		end if
 		
 	else if name of theObject starts with "set_ab_" then
-		myLog("action: set AB Info", 1)
+		--myLog("action: set AB Info", 1)
 		
 		set adiumPerson to get_selected_person_info(adiumView)
 		set abPerson to get_selected_person_id(abView)
@@ -1147,12 +1195,12 @@ on clicked theObject
 			display alert msgSelectPersonToSetAbInfo as warning message msgSelectPersonToSetAbInfoDetails attached to window "main"
 		else
 			if name of theObject is "set_ab_picture" then
-				myLog("action: will set Picture", 2)
+				--myLog("action: will set Picture", 2)
 				
 				copy_adium_picture_to_ab(adiumPerson, abPerson)
 				
 			else if name of theObject is "set_ab_im" then
-				myLog("action: will set IM", 2)
+				--myLog("action: will set IM", 2)
 				
 				set serviceName to get_adium_service(|id| of adiumPerson)
 				set contactLogin to nick of adiumPerson
@@ -1166,7 +1214,7 @@ on clicked theObject
 		end if
 		
 	else if name of theObject is "reveal_ab" then
-		myLog("action: Reveal contact in AB", 1)
+		--myLog("action: Reveal contact in AB", 1)
 		
 		-- Get person ID of the selected row
 		set personID to get_selected_person_id(abView)
@@ -1178,7 +1226,7 @@ on clicked theObject
 		end tell
 		
 	else if name of theObject is "add_to_ab" then
-		myLog("action: Add contact to AB", 1)
+		--myLog("action: Add contact to AB", 1)
 		
 		set adiumPerson to get_selected_person_info(adiumView)
 		set theService to get_adium_service(|id| of adiumPerson)
@@ -1218,6 +1266,38 @@ on clicked theObject
 			-- Finally disable the ADD button
 			disable_button("add_to_ab", adiumView)
 		end if
+		
+	else if name of theObject is "reveal_finder" then
+		--myLog("action: reveal picture in finder", 1)
+		--myLog(tool tip of theObject, 2)
+		
+		set theFile to tool tip of theObject
+		tell application "Finder"
+			reveal (theFile as POSIX file)
+			activate
+		end tell
+		
+	else if name of theObject is "ab_icon" then
+		--myLog("action: bring AB to front", 1)
+		
+		tell application "Address Book" to activate
+		
+	else if name of theObject is "adium_icon" then
+		--myLog("action: quack!", 1)
+		
+		if adiumOnline then
+			-- Toggle Adiumy flapping
+			if adiumFlapping then
+				set image of button "adium_icon" of adiumView to load image "adium-online"
+				set adiumFlapping to false
+			else
+				set image of button "adium_icon" of adiumView to load image "adium-flap"
+				play quack
+				set adiumFlapping to true
+			end if
+		end if
+		set_adium_status()
+		
 	end if
 end clicked
 
@@ -1225,12 +1305,13 @@ end clicked
 -- Search box
 
 on action theObject
-	myLog("event: action", 1)
+	--myLog("event: action", 1)
 	
 	if name of theObject is "search" then
 		set theSearchText to content of theObject as text
 		
 		if (id of theObject) is equal to (id of text field "search" of adiumView) then
+			set_adium_status()
 			search_adium(theSearchText)
 		else
 			search_ab(theSearchText)
@@ -1243,10 +1324,10 @@ end action
 -- Key pressed inside table
 
 on keyboard down theObject event theEvent
-	myLog("event: keyboard down", 1)
+	--myLog("event: keyboard down", 1)
 	
 	if key code of theEvent is in {52, 36, 49, 76} then -- ENTER, RETURN, SPACE, ENTER (Fn+return)
-		myLog("action: get user details", 1)
+		--myLog("action: get user details", 1)
 		show_details_for_selected_result(theObject)
 	end if
 end keyboard down
@@ -1255,37 +1336,39 @@ end keyboard down
 -- Menu item clicked
 
 on choose menu item theObject
-	myLog("event: choose menu item", 1)
+	--myLog("event: choose menu item", 1)
 	
 	if name of theObject is "report_not_in_ab" then
 		set reportName to title of theObject
-		myLog("action: report " & reportName, 1)
+		--myLog("action: report " & reportName, 1)
 		
-		start progress indicator "progress" of adiumView
 		clear_details(adiumView)
 		clear_search(adiumView)
 		set_status_bar(adiumView, "Report: " & reportName)
+		set maximum value of progress indicator "progress_report" of adiumView to item 2 of adiumContacts
 		populate_table(adiumView, search_report_not_in_ab())
+		set content of progress indicator "progress_report" of adiumView to 0
+		stop progress indicator "progress_report" of adiumView
 		auto_show_first_result(adiumView)
-		stop progress indicator "progress" of adiumView
 		set_adium_status()
 		
 	else if name of theObject is "report_not_in_adium" then
 		set reportName to title of theObject
-		myLog("action: report " & reportName, 1)
+		--myLog("action: report " & reportName, 1)
 		
-		start progress indicator "progress" of abView
 		clear_details(abView)
 		clear_search(abView)
 		set_status_bar(abView, "Report: " & reportName)
+		set maximum value of progress indicator "progress_report" of abView to item 2 of abContacts
 		populate_table(abView, search_report_not_in_adium())
+		set content of progress indicator "progress_report" of abView to 0
+		stop progress indicator "progress_report" of abView
 		auto_show_first_result(abView)
-		stop progress indicator "progress" of abView
 		set_adium_status()
 		
 	else if name of theObject is "report_no_im" then
 		set reportName to title of theObject
-		myLog("action: report " & reportName, 1)
+		--myLog("action: report " & reportName, 1)
 		
 		start progress indicator "progress" of abView
 		clear_details(abView)
@@ -1297,7 +1380,7 @@ on choose menu item theObject
 		
 	else if name of theObject is "report_no_picture" then
 		set reportName to title of theObject
-		myLog("action: report " & reportName, 1)
+		--myLog("action: report " & reportName, 1)
 		
 		start progress indicator "progress" of abView
 		clear_details(abView)
@@ -1311,7 +1394,7 @@ on choose menu item theObject
 		
 		set serviceID to (items -3 thru -1 of (name of theObject as text) as text)
 		set reportName to title of theObject
-		myLog("action: report " & reportName, 1)
+		--myLog("action: report " & reportName, 1)
 		
 		start progress indicator "progress" of abView
 		clear_details(abView)
@@ -1322,21 +1405,27 @@ on choose menu item theObject
 		stop progress indicator "progress" of abView
 		
 	else if name of theObject is "stats" then
-		myLog("action: stats", 1)
+		--myLog("action: stats", 1)
 		
 		display alert "Your Statistics" as warning message get_stats_report() attached to window "main"
 		save_defaults() -- Since we've stopped, let's make something useful...
 		
 	else if name of theObject is "donate" then
-		myLog("action: donate", 1)
+		--myLog("action: donate", 1)
 		
 		display alert "Donate to AdiumBook" as warning message "Donating (any amount) to the AdiumBook project you will help me to create new features and keep this application updated with the fast Adium development." & return & return & "AdiumBook is a one-man spare-time effort." & return & "My name is Aurelio, born 1977, brazilian." & return & "Support people." default button "Donate Now" alternate button "Later" attached to window "main"
 		save_defaults() -- Since we've stopped, let's make something useful...
 		
 	else if name of theObject is "website" then
-		myLog("action: website", 1)
+		--myLog("action: website", 1)
 		
 		open location myUrl
+		save_defaults() -- Since we've switched focus, let's make something useful...
+		
+	else if name of theObject is "issue" then
+		--myLog("action: issue", 1)
+		
+		open location issueUrl
 		save_defaults() -- Since we've switched focus, let's make something useful...
 		
 	end if
@@ -1350,7 +1439,7 @@ end choose menu item
 -- Note: code copied verbatim from Apple docs (almost verbatim: s/identifier/name/)
 
 on column clicked theObject table column tableColumn
-	myLog("event: column clicked", 1)
+	--myLog("event: column clicked", 1)
 	
 	set theDataSource to data source of theObject
 	set theColumnIdentifier to name of tableColumn
@@ -1371,10 +1460,10 @@ on column clicked theObject table column tableColumn
 end column clicked
 
 on alert ended theObject with reply withReply
-	myLog("event: alert ended", 1)
+	--myLog("event: alert ended", 1)
 	
 	if button returned of withReply is "Donate Now" then
-		myLog("alert button: donate", 1)
+		--myLog("alert button: donate", 1)
 		open location donateUrl
 		
 	else if button returned of withReply is "Quit" then
@@ -1385,57 +1474,33 @@ end alert ended
 
 -- Quit program if window is closed
 on will close theObject
-	myLog("event: will close", 1)
+	--myLog("event: will close", 1)
 	tell me to quit
 end will close
 
 -- Note: If "Force quit (SIGTERM)", this code will not be executed
 on will quit theObject
-	myLog("event: will quit", 1)
+	--myLog("event: will quit", 1)
 	save_defaults()
 end will quit
 
 on right mouse up theObject event theEvent
+	--myLog("event: right mouse up", 1)
+	
 	set the clipboard to (title of current menu item of theObject as text)
 end right mouse up
 
-(*
-
-XXX - Notes on the Adium install check (disabled)
-
-The Adium install check will only work if I put all the Adium-specific code
-into a separate file and use the "load script" command to call it. Then all
-its handlers will have to be called within a tell block. 
-
-All the Adium tell blocks (except one) are already inside functions, so the
-move won't be that hard. But then I loose the one-file feature and I'm still
-not sure if this test is *that* necessary.
-
-So I'm not doing it now. Maybe in future versions.
-
-
-
-
-property msgAdiumNotInstalled : "Sorry, you must have the Adium IM installed on your system to run AdiumBook."
-
-on check_adium_install()
-	try
-		tell application "Finder" to application file id "AdIM"
-	on error
-		display alert "Adium not installed" as critical message msgAdiumNotInstalled default button "Quit" alternate button "Download Adium" attached to window "main"
-	end try
-end check_adium_install
-
--- Alerts
-
-on alert ended theObject with reply theReply
-	myLog("event: alert ended", 1)
+on selection changed theObject
+	--myLog("event: selection changed", 1)
 	
-	if button returned of theReply is "Quit" then
-		tell me to quit
-	else if button returned of theReply is "Download Adium" then
-		open location adiumUrl
-		tell me to quit
+	-- Tried do attach details update here, but fast changes (scrolling) messes it all
+	-- show_details_for_selected_result(theObject)
+	
+	-- So we just clear the details, it's fast
+	if (id of theObject) is equal to (id of table view 1 of scroll view 1 of adiumView) then
+		clear_details(adiumView)
+	else
+		clear_details(abView)
 	end if
-end alert ended
-*)
+	
+end selection changed

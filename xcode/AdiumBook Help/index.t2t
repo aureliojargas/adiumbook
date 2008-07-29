@@ -12,6 +12,7 @@ APPNAME Help
 
 %!target: html
 %!style: help.css
+%!encoding: utf-8
 %!options: --css-sugar
 
 % Insert Apple Help required meta tags
@@ -36,36 +37,88 @@ APPNAME Help
 
   [img/adiumbook.png] 
 
+= About APPNAME =[about]
+
+APPNAME is an application useful to keep updated the information of your Adium and AB_NAME contacts.
+
+You have some friends on your AB_NAME, right? But all of them are already added to your Adium contact list? APPNAME can help you to find out.
+
+You have lots of friends on your Adium contact list, some with nice pictures. Wouldn't it be nice to add them to your AB_NAME with a single button click? APPNAME can make it for you.
+
+Which of your AB_NAME cards don't have any IM field filled? And which don't have a picture? And which do use Jabber? APPNAME comes to the rescue once again!
+
+= First steps =[intro]
+
+
+If you're new to APPNAME, follow these steps:
+
++ Run APPNAME — Easy, uh?
+
++ Choose the **Reports > Adium contacts not in AB** menu item (or just press Command-8)
+
+APPNAME will scan all your contacts and will try to find all your Adium contacts that still don't have a card on your AB_NAME.
+
++ Choose some contact on the Adium list (left side).
+
+Her/his name and IM login will appear on the details pane below. A picture will also appear if she/he defined one.
+
+Maybe you have this person on your AB_NAME, maybe don't. The report searches only by the IM field in AB_NAME, ignoring names, nicknames and e-mail addresses. But there is a button that makes a more detailed search.
+
++ Press the Find button. [img/but-find-ab.png] 
+
+[img/but-set-im.png] If you already have this person on your AB_NAME, she/he will appear on the listings at the right side. Just click on the name and the details will appear below. Now check the IM fields on the AB_NAME side. If they don't match with the current Adium contact, you can use the **Set IM** button to fix it. It's important to set the IM field of all your contacts, so Adium can recognize this person.
+
+[img/but-set-pict.png] If the AB_NAME contact (right) doesn't have a picture, but the Adium contact (left) have, you can copy this picture pressing the **Set Pic** button. It will appear instantly on the right side.
+
+[img/but-add-card.png] If you don't have this person on your AB_NAME, you can add she/he by pressing the **Add** button. Simple as that. The name, IM login and picture will be filled in the card. Now you can press the **Card** button [img/but-reveal-ab.png] to edit this new card in AB_NAME.
+
++ Repeat steps 3 and 4 for every contact and you'll end with a very complete and consistent AB_NAME data.
+
+
+Run APPNAME from time to time to keep your contacts updated!
+
+
+
 = News for this version =[news]
 
-- Reworked interface
-  [img/multi.png]
+- The main window is now resizable - Finally!
+  [img/window-resize.png]
 
-- Performance tweaks - Now it's even faster!
+- Full text search for the "Find in Adium" and "Find in AB" buttons.
 
-- Support for multiple accounts in AB_NAME view - Finally!
+- Improved "AB contacts not in Adium" report,
+  now finding AIM contacts with spaces on the screen name.
 
-- New menu item Report > Your statistics
+- Added a progress bar for the
+  "Adium contacts not in AB" and
+  "AB contacts not in Adium" reports.
 
-- New menu item APPNAME > Sponsor new features
+- New menu item APPNAME > Report an issue.
 
-- The Set IM button now creates a new field instead overwriting existent data
+- Clicking news:
+  - Clicking the contact picture now reveals its file in Finder.
+  - Clicking the AB_NAME icon brings the AB_NAME application to the front.
+  - Clicking the sleepy Adium icon checks if Adium is online.
+  - Clicking the awake Adium icon makes a... discover for yourself! :)
 
-- Fixed Jabber accounts issues with Reports
+- **Note:** Besides the new full text search on the Find buttons,
+  the reports still search only by service. This is desired, because
+  you still need to fill the correct IM field in AB_NAME for those contacts.
 
-- Universal binary
 
+And some other minor changes, registered on the
+[complete Version History http://code.google.com/p/adiumbook/wiki/VersionHistory].
 
-Enjoyed the new features? Want to see more on the next release?
-
-So please support the APPNAME project, clicking on the
-//Sponsor new features// menu item.
+Enjoyed the new features?
+Want to see more on the next release?
+So please support the APPNAME project,
+clicking on the //♡ Donate// menu item.
 
 = Tips & Tricks =
 
-- In AB_NAME view, to copy the selected IM login to the clipboard,
-  **right click it**.
-  Yes, right click the Pop-up button.
+- If you want to **list all your contacts**,
+  just make an empty search:
+  delete the search text or press the X button.
 
 - The **text search is case insensitive**,
   so don't mind about capitalization.
@@ -77,6 +130,10 @@ So please support the APPNAME project, clicking on the
 
 - You can **drag the table headings** inner border
   to resize the columns width. See picture.
+
+- In AB_NAME view, to copy the selected IM login to the clipboard,
+  **right click it**.
+  Yes, right click the Pop-up button.
 
 - **Adium must be Online**.
   If don't, the search results will be very poor and incomplete.
@@ -99,28 +156,43 @@ So please support the APPNAME project, clicking on the
 = Buttons =[buttons]
 
 : [img/but-find-ab.png] Try to find in AB_NAME the selected Adium contact.
-The contact IM login and service are searched on the AB_NAME
-cards. As it isn't a name or nick search, the IM field on the
-contact's card must be filled. The results (usually just one
-contact) will appear on the AB_NAME side (right).
+
+The information for the currently selected contact (IM login and full name)
+is searched on the AB_NAME cards. APPNAME tries to find them on the
+following fields: full name, nickname, e-mail addresses and IM information
+(AIM, ICQ, MSN, Yahoo and Jabber). The found contacts will appear
+on the AB_NAME side (right).
+
 : [img/but-find-adium.png] Try to find in Adium the selected AB_NAME contact.
-All the IM logins filled on the contact's card are searched,
-so there can be multiple results on the Adium side (left).
-Usually all the contacts found are from the same person, but
-note that each can have a different picture.
+
+Similar to the previous button, this one make the opposite:
+it gathers all the information for the current AB_NAME contact
+(full name, nickname, e-mail addresses, AIM/ICQ/MSN/Yahoo/Jabber names)
+and tries to find it on the Adium contact list (full name and IM login).
+The found contacts will appear on the Adium side (left).
+
+**Note:** Multiple entries for the same person can appear,
+but each for a different IM service,
+and possibly with a different picture.
+
 : [img/but-reveal-ab.png] Show the contact's card in AB_NAME.
+
 This button brings the AB_NAME application to the front, showing the
 card of the selected contact. Then you can make quick updates on it.
 Useful after adding an Adium contact to AB_NAME (See next button).
 
 **Note:** In AB_NAME, the "All" group must be selected and
 its search field must be empty.
+
 : [img/but-add-card.png] Add the Adium contact to AB_NAME.
+
 This button creates a new card in AB_NAME, using the
 information of the selected Adium contact: name, IM login and
 picture. Before adding a new card, you can search for the
 contact in AB_NAME using the "Find in Address Book" button.
+
 : [img/but-set-im.png] Copy the contact's IM login from Adium to AB_NAME.
+
 This button sets the IM field of the selected AB_NAME contact
 using the IM login (number, e-mail or username) of the
 selected Adium contact. Useful to consolidate the contacts, so
@@ -132,7 +204,9 @@ with no IM" report (see [Reports #reports]).
 doesn't overwrite the previous contents (if any), but creates a new
 field.
 (//In APPNAME version 1.2 and older, it was an overwrite operation.//)
+
 : [img/but-set-pict.png] Copy the contact's picture from Adium to AB_NAME.
+
 This button sets the picture of the selected AB_NAME contact
 using the picture of the selected Adium contact. In simple
 words, copy the picture on the left to the right. You can find
@@ -199,11 +273,16 @@ operation cannot be undone.
 
 = Contact =[contact]
 
-Contact the author in verde@aurelio.net.
+- Contact the author in verde@aurelio.net.
 
-Visit the program's website and leave a comment:
+- Visit the [APPNAME website http://aurelio.net/soft/adiumbook]
+  and leave a comment.
 
-- http://aurelio.net/soft/adiumbook
--
+- Found a problem? Check the
+  [troubleshooting section http://aurelio.net/soft/adiumbook#issues]
+  on the website.
+  If your problem isn't there, or
+  if you have a suggestion for future releases,
+  please use the APPNAME > Report an issue menu item.
 
-Enjoy!
+- Enjoy!

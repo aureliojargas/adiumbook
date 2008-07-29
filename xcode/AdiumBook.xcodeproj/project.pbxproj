@@ -20,14 +20,16 @@
 /* End PBXAppleScriptBuildPhase section */
 
 /* Begin PBXBuildFile section */
+		E7196D980E3986F500BF4247 /* adium-flap.png in Resources */ = {isa = PBXBuildFile; fileRef = E7196D970E3986F500BF4247 /* adium-flap.png */; };
+		E7196D9E0E39876900BF4247 /* adium-online.png in Resources */ = {isa = PBXBuildFile; fileRef = E7196D9D0E39876900BF4247 /* adium-online.png */; };
+		E7196DB10E398D6600BF4247 /* adium-offline.png in Resources */ = {isa = PBXBuildFile; fileRef = E7196DB00E398D6600BF4247 /* adium-offline.png */; };
+		E7196DB40E398E1200BF4247 /* Inflate.aif in Resources */ = {isa = PBXBuildFile; fileRef = E7196DB30E398E1200BF4247 /* Inflate.aif */; };
 		E7A8978C0A8D1880006383FB /* Adium Book.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = DA206CF3015C4E8B03C91932 /* Adium Book.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
 		E7A8978E0A8D1880006383FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		E7A8978F0A8D1880006383FB /* addressbook.png in Resources */ = {isa = PBXBuildFile; fileRef = E71CB52B088480A400ACA68A /* addressbook.png */; };
 		E7A897900A8D1880006383FB /* aim.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0A00886C25200F803BB /* aim.png */; };
 		E7A897910A8D1880006383FB /* icq.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0A40886C26D00F803BB /* icq.png */; };
 		E7A897920A8D1880006383FB /* msn.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0A80886C27700F803BB /* msn.png */; };
-		E7A897930A8D1880006383FB /* adium.png in Resources */ = {isa = PBXBuildFile; fileRef = E76AF0F70886C54300F803BB /* adium.png */; };
-		E7A897940A8D1880006383FB /* adium-offline.png in Resources */ = {isa = PBXBuildFile; fileRef = E7959F43088873D3006734F5 /* adium-offline.png */; };
 		E7A897950A8D1880006383FB /* adiumbook.icns in Resources */ = {isa = PBXBuildFile; fileRef = E7E69B6808A6AD120001AF51 /* adiumbook.icns */; };
 		E7A897960A8D1880006383FB /* jab.png in Resources */ = {isa = PBXBuildFile; fileRef = E714EC6C08C54496000BCD7D /* jab.png */; };
 		E7A897970A8D1880006383FB /* yim.png in Resources */ = {isa = PBXBuildFile; fileRef = E714EC6D08C54496000BCD7D /* yim.png */; };
@@ -55,6 +57,10 @@
 		E703E40008D3C3630044A084 /* but-find-adium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-find-adium.png"; sourceTree = "<group>"; };
 		E714EC6C08C54496000BCD7D /* jab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jab.png; sourceTree = "<group>"; };
 		E714EC6D08C54496000BCD7D /* yim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yim.png; sourceTree = "<group>"; };
+		E7196D970E3986F500BF4247 /* adium-flap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "adium-flap.png"; sourceTree = "<group>"; };
+		E7196D9D0E39876900BF4247 /* adium-online.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "adium-online.png"; sourceTree = "<group>"; };
+		E7196DB00E398D6600BF4247 /* adium-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "adium-offline.png"; sourceTree = "<group>"; };
+		E7196DB30E398E1200BF4247 /* Inflate.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inflate.aif; sourceTree = "<group>"; };
 		E71CB52B088480A400ACA68A /* addressbook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addressbook.png; sourceTree = "<group>"; };
 		E721BDD008D4816700DF5773 /* but-set-im.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-set-im.png"; sourceTree = "<group>"; };
 		E721BDD108D4816700DF5773 /* but-add-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-add-card.png"; sourceTree = "<group>"; };
@@ -64,10 +70,8 @@
 		E76AF0A00886C25200F803BB /* aim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aim.png; sourceTree = "<group>"; };
 		E76AF0A40886C26D00F803BB /* icq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icq.png; sourceTree = "<group>"; };
 		E76AF0A80886C27700F803BB /* msn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = msn.png; sourceTree = "<group>"; };
-		E76AF0F70886C54300F803BB /* adium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = adium.png; sourceTree = "<group>"; };
 		E786BC050A862FE40047336A /* but-reveal-ab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-reveal-ab.png"; sourceTree = "<group>"; };
 		E786BC6D0A865E060047336A /* AdiumBook Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "AdiumBook Help"; sourceTree = "<group>"; };
-		E7959F43088873D3006734F5 /* adium-offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "adium-offline.png"; sourceTree = "<group>"; };
 		E7A897A90A8D1880006383FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7A897AA0A8D1880006383FB /* AdiumBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdiumBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D451D20A922A2B001246EC /* AppleScriptKit.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; name = AppleScriptKit.sdef; path = /System/Library/Frameworks/AppleScriptKit.framework/Versions/A/Resources/AppleScriptKit.sdef; sourceTree = "<absolute>"; };
@@ -146,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				E7D451D20A922A2B001246EC /* AppleScriptKit.sdef */,
+				E7196DB30E398E1200BF4247 /* Inflate.aif */,
 				E786BC6D0A865E060047336A /* AdiumBook Help */,
 				E71CB53D0884875700ACA68A /* img */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -168,8 +173,9 @@
 			children = (
 				E786BC050A862FE40047336A /* but-reveal-ab.png */,
 				E7E69B6808A6AD120001AF51 /* adiumbook.icns */,
-				E76AF0F70886C54300F803BB /* adium.png */,
-				E7959F43088873D3006734F5 /* adium-offline.png */,
+				E7196DB00E398D6600BF4247 /* adium-offline.png */,
+				E7196D9D0E39876900BF4247 /* adium-online.png */,
+				E7196D970E3986F500BF4247 /* adium-flap.png */,
 				E71CB52B088480A400ACA68A /* addressbook.png */,
 				E721BDD108D4816700DF5773 /* but-add-card.png */,
 				E721BDD008D4816700DF5773 /* but-set-im.png */,
@@ -246,8 +252,6 @@
 				E7A897900A8D1880006383FB /* aim.png in Resources */,
 				E7A897910A8D1880006383FB /* icq.png in Resources */,
 				E7A897920A8D1880006383FB /* msn.png in Resources */,
-				E7A897930A8D1880006383FB /* adium.png in Resources */,
-				E7A897940A8D1880006383FB /* adium-offline.png in Resources */,
 				E7A897950A8D1880006383FB /* adiumbook.icns in Resources */,
 				E7A897960A8D1880006383FB /* jab.png in Resources */,
 				E7A897970A8D1880006383FB /* yim.png in Resources */,
@@ -259,6 +263,10 @@
 				E7A8979D0A8D1880006383FB /* but-set-pict.png in Resources */,
 				E7A8979E0A8D1880006383FB /* but-reveal-ab.png in Resources */,
 				E7A8979F0A8D1880006383FB /* AdiumBook Help in Resources */,
+				E7196D980E3986F500BF4247 /* adium-flap.png in Resources */,
+				E7196D9E0E39876900BF4247 /* adium-online.png in Resources */,
+				E7196DB10E398D6600BF4247 /* adium-offline.png in Resources */,
+				E7196DB40E398E1200BF4247 /* Inflate.aif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
