@@ -134,7 +134,6 @@ property quack : ""
 
 -- Some random text
 property requiredAdiumVersion : "1.2"
-property myVersion : "1.4" -- not used
 property myUrl : "http://aurelio.net/soft/adiumbook/"
 property adiumUrl : "http://www.adiumx.com"
 property issueUrl : "http://code.google.com/p/adiumbook/issues/list"
