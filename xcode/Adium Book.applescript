@@ -713,7 +713,9 @@ on get_adium_person_details(accountID, contactLogin)
 			tell thisContact
 				set |name| of theInfo to display name
 				set |picture| of theInfo to adiumContactPicturePath
-				my write_file(adiumContactPicturePath, image)
+				try
+					my write_file(adiumContactPicturePath, image)
+				end try
 				if serviceName is in {aim, mac} of adiumServiceId then
 					set aim of theInfo to contactLogin
 				else if serviceName is (icq of adiumServiceId) then
