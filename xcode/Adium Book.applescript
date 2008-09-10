@@ -164,7 +164,7 @@ on myLog(theMessage, theLevel)
 end myLog
 
 on get_adium_service(accountID)
-	tell application "Adium" to return (title of service of (first account whose id is accountID))
+	tell application "Adium" to return (name of service of (first account whose id is accountID))
 end get_adium_service
 
 on populate_popup(thePopup, theList)
@@ -438,7 +438,7 @@ end search_ab
 on search_adium_by_service_test(theData)
 	set found to 0
 	set {serviceName, contactLogin} to theData
-	tell application "Adium" to set found to count of (every contact of (every account of service serviceName) whose title is contactLogin)
+	tell application "Adium" to set found to count of (every contact of (every account of service serviceName) whose name is contactLogin)
 	return found is greater than 0
 end search_adium_by_service_test
 
@@ -527,10 +527,10 @@ on search_adium_by_text(theSearchText)
 	tell application "Adium"
 		if theSearchText is not "" then
 			ignoring white space -- XXX not working, needed for AIM
-				set theResults to {id of account, title, display name} of (every contact whose (title contains theSearchText) or (display name contains theSearchText))
+				set theResults to {id of account, name, display name} of (every contact whose (name contains theSearchText) or (display name contains theSearchText))
 			end ignoring
 		else
-			set theResults to {id of account, title, display name} of every contact
+			set theResults to {id of account, name, display name} of every contact
 		end if
 	end tell
 	return convert_results_to_datasource_record(theResults)
@@ -618,7 +618,7 @@ on search_report_not_in_ab()
 	
 	-- Get all Adium contacts
 	tell application "Adium"
-		set {accountIds, serviceNames, contactLogins, displayNames} to {id of account, title of service of account, title, display name} of every contact
+		set {accountIds, serviceNames, contactLogins, displayNames} to {id of account, name of service of account, name, display name} of every contact
 	end tell
 	
 	-- Search one by one in AB
@@ -695,7 +695,7 @@ on get_adium_person_details(accountID, contactLogin)
 	
 	-- XXX "repeat/exit repeat" has proven to be best than "first contact of ..."
 	tell application "Adium"
-		repeat with thisContact in (every contact of (first account whose id is accountID) whose title is contactLogin)
+		repeat with thisContact in (every contact of (first account whose id is accountID) whose name is contactLogin)
 			tell thisContact
 				set |name| of theInfo to display name
 				set |picture| of theInfo to adiumPicturesFolder & serviceName & "." & contactLogin
