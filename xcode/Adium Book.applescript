@@ -84,6 +84,13 @@ Image gotchas
 		
 			I refuse to do it :)
 			
+			Update: Since AdiumBook 1.5, the Adium picture is
+			saved to a temporary file :( Adium has changed the
+			picture filename to something encoded, such as
+			838b3f3242aba1a46b3bb188757ee8b2ec68de3a.jpg
+			As we can't guess the filename anymore, the tempfile
+			is required.
+			
 
 Adium versions
 	
@@ -114,8 +121,8 @@ property abImDefaultLabel : "home" -- Used by the "Set IM" button (home, work, o
 -- These are set on "awake from nib"
 property adiumView : ""
 property abView : ""
-property adiumPicturesFolder : ""
 property abPicturesFolder : ""
+property adiumContactPicturePath : ""
 property adiumContacts : {0, 0} -- Found / Total
 property abContacts : {0, 0}
 property adiumOnline : true -- Changing here changes nothing
@@ -161,6 +168,14 @@ property msgPersonAlreadyInAbDetails : "This contact already has a card on your 
 on myLog(theMessage, theLevel)
 	if theLevel is not greater than theLogLevel then log (theMessage)
 end myLog
+
+on write_file(filePath, fileContents)
+	set f to filePath as POSIX file
+	set f to open for access f with write permission
+	set eof of f to 0
+	write fileContents to f
+	close access f
+end write_file
 
 on get_adium_service(accountID)
 	tell application "Adium" to return (name of service of (first account whose id is accountID))
@@ -697,7 +712,8 @@ on get_adium_person_details(accountID, contactLogin)
 		repeat with thisContact in (every contact of (first account whose id is accountID) whose name is contactLogin)
 			tell thisContact
 				set |name| of theInfo to display name
-				set |picture| of theInfo to adiumPicturesFolder & serviceName & "." & contactLogin
+				set |picture| of theInfo to adiumContactPicturePath
+				my write_file(adiumContactPicturePath, image)
 				if serviceName is in {aim, mac} of adiumServiceId then
 					set aim of theInfo to contactLogin
 				else if serviceName is (icq of adiumServiceId) then
@@ -1056,8 +1072,9 @@ on awake from nib theObject
 	end if
 	
 	-- Setting here works fine. Setting on property definition gets MY home path hardcoded...
-	set adiumPicturesFolder to POSIX path of (path to library folder from user domain) & "Caches/Adium/Default/"
+	--set adiumPicturesFolder to POSIX path of (path to library folder from user domain) & "Caches/Adium/Default/"
 	set abPicturesFolder to POSIX path of (path to application support from user domain) & "AddressBook/Images/"
+	set adiumContactPicturePath to do shell script "mktemp -t AdiumBook"
 	
 	-- Handy shortcuts for each half of the screen
 	set adiumView to view "adium" of split view 1 of window "main"
