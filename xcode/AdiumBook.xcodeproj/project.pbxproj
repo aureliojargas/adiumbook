@@ -72,7 +72,7 @@
 		E76AF0A80886C27700F803BB /* msn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = msn.png; sourceTree = "<group>"; };
 		E786BC050A862FE40047336A /* but-reveal-ab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-reveal-ab.png"; sourceTree = "<group>"; };
 		E786BC6D0A865E060047336A /* AdiumBook Help */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "AdiumBook Help"; sourceTree = "<group>"; };
-		E7A897A90A8D1880006383FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		E7A897A90A8D1880006383FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E7A897AA0A8D1880006383FB /* AdiumBook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdiumBook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7D451D20A922A2B001246EC /* AppleScriptKit.sdef */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.sdef; name = AppleScriptKit.sdef; path = /System/Library/Frameworks/AppleScriptKit.framework/Versions/A/Resources/AppleScriptKit.sdef; sourceTree = "<absolute>"; };
 		E7E69B6808A6AD120001AF51 /* adiumbook.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = adiumbook.icns; sourceTree = "<group>"; };

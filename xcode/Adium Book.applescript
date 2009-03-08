@@ -144,6 +144,7 @@ property requiredAdiumVersion : "1.2"
 property myUrl : "http://aurelio.net/soft/adiumbook/"
 property adiumUrl : "http://www.adiumx.com"
 property issueUrl : "http://code.google.com/p/adiumbook/issues/list"
+property iusethisUrl : "http://osx.iusethis.com/app/adiumbook"
 property donateUrl : "https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=verde%40aurelio%2enet&item_name=AdiumBook&no_shipping=1&return=http%3a%2f%2faurelio%2enet%2fdonate%2dthanks%2ehtml&cn=Please%20leave%20a%20comment%20to%20me&tax=0&currency_code=USD&bn=PP%2dDonationsBF&charset=UTF%2d8"
 
 property tooltipAdiumOffline : "Adium is Offline. Please login or you'll have poor search results."
@@ -1438,6 +1439,12 @@ on choose menu item theObject
 		--myLog("action: website", 1)
 		
 		open location myUrl
+		save_defaults() -- Since we've switched focus, let's make something useful...
+		
+	else if name of theObject is "iusethis" then
+		--myLog("action: website", 1)
+		
+		open location iusethisUrl
 		save_defaults() -- Since we've switched focus, let's make something useful...
 		
 	else if name of theObject is "issue" then
