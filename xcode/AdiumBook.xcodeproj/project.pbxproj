@@ -27,6 +27,7 @@
 		E74708960F6400BA00954CD7 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E74708950F6400BA00954CD7 /* Sparkle.framework */; };
 		E74708B00F64010700954CD7 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E74708950F6400BA00954CD7 /* Sparkle.framework */; };
 		E74708B90F6411F100954CD7 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = E74708B80F6411F100954CD7 /* dsa_pub.pem */; };
+		E74709300F65F1FA00954CD7 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = E747092F0F65F1FA00954CD7 /* Credits.rtf */; };
 		E7A8978C0A8D1880006383FB /* Adium Book.applescript in AppleScript */ = {isa = PBXBuildFile; fileRef = DA206CF3015C4E8B03C91932 /* Adium Book.applescript */; settings = {ATTRIBUTES = (Debug, ); }; };
 		E7A8978E0A8D1880006383FB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		E7A8978F0A8D1880006383FB /* addressbook.png in Resources */ = {isa = PBXBuildFile; fileRef = E71CB52B088480A400ACA68A /* addressbook.png */; };
@@ -84,6 +85,7 @@
 		E721BDD308D4816700DF5773 /* but-set-pict.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "but-set-pict.png"; sourceTree = "<group>"; };
 		E74708950F6400BA00954CD7 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		E74708B80F6411F100954CD7 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
+		E747092F0F65F1FA00954CD7 /* Credits.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		E757E62808D3676200101427 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		E76AF0A00886C25200F803BB /* aim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aim.png; sourceTree = "<group>"; };
 		E76AF0A40886C26D00F803BB /* icq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icq.png; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				E7196DB30E398E1200BF4247 /* Inflate.aif */,
 				E786BC6D0A865E060047336A /* AdiumBook Help */,
 				E71CB53D0884875700ACA68A /* img */,
+				E747092F0F65F1FA00954CD7 /* Credits.rtf */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				E757E62708D3676200101427 /* MainMenu.nib */,
 			);
@@ -235,6 +238,7 @@
 				E7A897A00A8D1880006383FB /* Sources */,
 				E7A897A20A8D1880006383FB /* Frameworks */,
 				E74708AD0F6400D700954CD7 /* CopyFiles */,
+				E74708E70F64B3C800954CD7 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -290,10 +294,27 @@
 				E7196DB10E398D6600BF4247 /* adium-offline.png in Resources */,
 				E7196DB40E398E1200BF4247 /* Inflate.aif in Resources */,
 				E74708B90F6411F100954CD7 /* dsa_pub.pem in Resources */,
+				E74709300F65F1FA00954CD7 /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E74708E70F64B3C800954CD7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/python;
+			shellScript = "import os, re\n\n# reading svn version\nversion = os.popen('svnversion -n').read()\nversion = version.split(':')[-1]\nif not version[-1].isdigit():\n\tversion = version[:-1]\nversion = int(version) + 1\n\n# save new version to plist\nfd = open('Info.plist', 'r')\nnew_plist = re.sub(\n\tr'(<key>CFBundleVersion</key>\\n\\s*<string)>.*?<',\n\tr'\\1>%s<' % version,\n\tfd.read())\nfd.close()\nfd = open('Info.plist', 'w')\nfd.write(new_plist)\nfd.close()\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E7A897A00A8D1880006383FB /* Sources */ = {
