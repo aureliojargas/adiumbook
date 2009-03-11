@@ -114,7 +114,7 @@ Tips
 *)
 
 -- The only properties that you may want to change
-property theLogLevel : 3 -- Zero: no log, 1: informative log, 2: detailed log, 3: ugly log
+property theLogLevel : 0 -- Zero: no log, 1: informative log, 2: detailed log, 3: ugly log
 property abImDefaultLabel : "home" -- Used by the "Set IM" button (home, work, other)
 
 
