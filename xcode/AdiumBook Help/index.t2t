@@ -4,11 +4,15 @@ APPNAME Help
 %%% Hello,
 %%%
 %%% This is a txt2tags source file.
-%%% It can be converted to HTML, XHTML, LaTeX, Man Page and other formats.
+%%% It's a nice lightweight text markup system, that can be
+%%% converted to HTML, Wiki, LaTeX, Man Page and many other formats.
 %%%
 %%% Download txt2tags now!
 %%% http://txt2tags.sf.net
 
+% TIP
+% To index this file after any change, use:
+% /Developer/Applications/Utilities/Help Indexer.app
 
 %!target: html
 %!style: help.css
@@ -54,7 +58,7 @@ If you're new to APPNAME, follow these steps:
 
 + Run APPNAME — Easy, uh?
 
-+ Choose the **Reports > Adium contacts not in AB** menu item (or just press Command-8)
++ Choose the **Reports > Adium contacts not in Address Book** menu item.
 
 APPNAME will scan all your contacts and will try to find all your Adium contacts that still don't have a card on your AB_NAME.
 
@@ -62,7 +66,7 @@ APPNAME will scan all your contacts and will try to find all your Adium contacts
 
 Her/his name and IM login will appear on the details pane below. A picture will also appear if she/he defined one.
 
-Maybe you have this person on your AB_NAME, maybe don't. The report searches only by the IM field in AB_NAME, ignoring names, nicknames and e-mail addresses. But there is a button that makes a more detailed search.
+Maybe you have this person on your AB_NAME, maybe you don't. The report searches only by the IM field in AB_NAME, ignoring names, nicknames and e-mail addresses. But there is a button that makes a more detailed search.
 
 + Press the Find button. [img/but-find-ab.png] 
 
@@ -81,30 +85,31 @@ Run APPNAME from time to time to keep your contacts updated!
 
 = News for this version =[news]
 
-- The main window is now resizable - Finally!
-  [img/window-resize.png]
+- Fixed compatibility issues, now works with Adium 1.3 and newer.
 
-- Full text search for the "Find in Adium" and "Find in AB" buttons.
+- Fixed the display of Adium pictures, which wasn't working for some contacts.
 
-- Improved "AB contacts not in Adium" report,
-  now finding AIM contacts with spaces on the screen name.
+- The Reports menu is now filled with fresh new items:
 
-- Added a progress bar for the
-  "Adium contacts not in AB" and
-  "AB contacts not in Adium" reports.
+  - Adium contacts with AIM/Mac
+  - Adium contacts with ICQ
+  - Adium contacts with MSN
+  - Adium contacts with Yahoo!
+  - Adium contacts with Jabber/GTalk
+  - Adium contacts with other IM
+  - Adium contacts with picture
+  - Adium contacts without picture
+  - Address Book contacts with picture
 
-- New menu item APPNAME > Report an issue.
+- Added automatic software update, provided by [Sparkle http://sparkle.andymatuschak.org/]. Now you'll never have to download and install APPNAME by hand anymore, it's all automatic. You can find it in **APPNAME > Check for Updates...** menu.
 
-- Clicking news:
-  - Clicking the contact picture now reveals its file in Finder.
-  - Clicking the AB_NAME icon brings the AB_NAME application to the front.
-  - Clicking the sleepy Adium icon checks if Adium is online.
-  - Clicking the awake Adium icon makes a... discover for yourself! :)
+- Prettier About panel, showing donators names and a link to the
+  [AdiumBook sources http://code.google.com/p/adiumbook/source/checkout].
 
-- **Note:** Besides the new full text search on the Find buttons,
-  the reports still search only by service. This is desired, because
-  you still need to fill the correct IM field in AB_NAME for those contacts.
+- New menu item AdiumBook > [i use this http://osx.iusethis.com/app/adiumbook]. Please tell to the world that APPNAME is nice! :)
 
+- Service icons (ICQ, AIM, MSN, etc) were updated to match the new Adium icons.
+-
 
 And some other minor changes, registered on the
 [complete Version History http://code.google.com/p/adiumbook/wiki/VersionHistory].
@@ -113,6 +118,9 @@ Enjoyed the new features?
 Want to see more on the next release?
 So please support the APPNAME project,
 clicking on the //♡ Donate// menu item.
+
+This release took me **29 work hours** to be made.
+I hope you like it!
 
 = Tips & Tricks =
 
@@ -135,6 +143,14 @@ clicking on the //♡ Donate// menu item.
   **right click it**.
   Yes, right click the Pop-up button.
 
+- Click the contact picture to **reveal its file in Finder**.
+
+- Click the AB_NAME icon to **bring the AB_NAME application** to the front.
+
+- Click the sleepy Adium duck to **check if Adium is online**.
+
+- Click the awake Adium duck to... discover for yourself! :)
+
 - **Adium must be Online**.
   If don't, the search results will be very poor and incomplete.
 
@@ -142,6 +158,10 @@ clicking on the //♡ Donate// menu item.
   **both Adium and AB_NAME are also launched**
   (if they aren't already running).
   APPNAME needs them.
+
+- The **cross reports search only by service** (not name or nickname).
+  This is desired, because you need to fill the correct IM field in AB_NAME
+  for those contacts, so Adium will know about them.
 
 - To **fully integrate the applications**, set up Adium to get the
   contact's information from AB_NAME (picture and name).
@@ -197,8 +217,8 @@ This button sets the IM field of the selected AB_NAME contact
 using the IM login (number, e-mail or username) of the
 selected Adium contact. Useful to consolidate the contacts, so
 Adium can use their card's information. You can find people
-with missing IM information in AB_NAME using the "AB contacts
-with no IM" report (see [Reports #reports]).
+with missing IM information in AB_NAME using the "Address Book
+contacts with no IM" report (see [Reports #reports]).
 
 **Note:** This button really sets the AB_NAME card IM field. It
 doesn't overwrite the previous contents (if any), but creates a new
@@ -210,8 +230,8 @@ field.
 This button sets the picture of the selected AB_NAME contact
 using the picture of the selected Adium contact. In simple
 words, copy the picture on the left to the right. You can find
-people with missing picture in AB_NAME using the "AB contacts
-with no picture" report (see [Reports #reports]).
+people with missing picture in AB_NAME using the "Address Book
+contacts with no picture" report (see [Reports #reports]).
 
 **Note:** This button really sets the contact's picture in
 AB_NAME. It overwrites the previous picture (if any) and this
@@ -222,45 +242,71 @@ operation cannot be undone.
 
                   [img/reports.png]
 
-+ **AB contacts with AIM/.Mac**
-+ **AB contacts with ICQ**
-+ **AB contacts with MSN**
-+ **AB contacts with Yahoo!**
-+ **AB contacts with Jabber**
+- **Adium contacts with AIM/.Mac**
+- **Adium contacts with ICQ**
+- **Adium contacts with MSN**
+- **Adium contacts with Yahoo!**
+- **Adium contacts with Jabber/GTalk**
 
-  Lists all AB_NAME contacts who have the specific IM field
-  filled. A quick way to find the preferred IM service of your
-  friends.
+  Lists all Adium contacts from the specific IM service.
+  Which one your friends use most?
 
-+ **AB contacts with no IM**
+  Note: You must be online. If you're offline,
+  the report will be empty for that service.
 
-  Lists all AB_NAME contacts who have no IM field filled. They
-  are smart people who have a real life and don't spend time chatting
-  on the computer. Or maybe you just forgot to fill their info ;)
+- **Adium contacts with other IM**
 
-+ **AB contacts with no picture**
+  Lists all Adium contacts from other IM services, such as
+  Facebook, Gadu-Gadu, MobileMe, MySpace and more.
 
-  Lists all AB_NAME contacts who have no picture set. They are
-  just letters and numbers on your computer. What about to give them a
-  face? Use the "Find in Adium" button to try to find them in Adium,
-  so you can use their IM picture (icon, avatar, ...) on the AB_NAME
-  card.
+  Note: You must be online. If you're offline,
+  the report will be empty for that service.
 
-+ **Adium contacts not in AB**
+- **Adium contacts with picture**
+- **Adium contacts without picture**
+
+  Lists all Adium contacts who (don't) have picture set.
+  It's another way for you to manage your contacts.
+
+- **Adium contacts not in Address Book**
 
   Find your Adium-only contacts. With this report you can find people
   who you use to chat but don't have a card on your AB_NAME.
   Maybe you are forgetting somebody special? Or maybe you already have
   added some of them but just forgot to fill the IM field on AB_NAME.
 
-+ **AB contacts not in Adium**
+- **Address Book contacts with AIM/.Mac**
+- **Address Book contacts with ICQ**
+- **Address Book contacts with MSN**
+- **Address Book contacts with Yahoo!**
+- **Address Book contacts with Jabber**
+
+  Lists all AB_NAME contacts who have the specific IM field
+  filled. Useful to find inconsistencies in the people's cards.
+
+- **Address Book contacts with no IM**
+
+  Lists all AB_NAME contacts who have no IM field filled. They
+  are smart people who have a real life and don't spend time chatting
+  on the computer. Or maybe you just forgot to fill their info ;)
+
+- **Address Book contacts with picture**
+- **Address Book contacts without picture**
+
+  Lists all AB_NAME contacts who (don't) have picture set.
+  What about to give the faceless people a face?
+  Use the "Find in Adium" button to try to find them in Adium,
+  so you can use their IM picture (icon, avatar, ...) on the AB_NAME
+  card.
+
+- **Address Book contacts not in Adium**
 
   Find your AB_NAME-only contacts. With this report you can find people
   who have one or more IM informed on the AB_NAME card, but you
   haven't them in your Adium contact list. You know the girl, maybe
   she's online, but you can't talk to her because she's not on your
   list. APPNAME helps you to get social!
-+ 
+
 - **Your statistics** (Command-S)
 
   A nice report with your usage statistics. It shows how many
@@ -277,6 +323,8 @@ operation cannot be undone.
 
 - Visit the [APPNAME website http://aurelio.net/soft/adiumbook]
   and leave a comment.
+
+- Help to promote APPNAME to new users! Sign the APPNAME profile at [i use this website http://osx.iusethis.com/app/adiumbook].
 
 - Found a problem? Check the
   [troubleshooting section http://aurelio.net/soft/adiumbook#issues]
