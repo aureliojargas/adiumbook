@@ -606,6 +606,21 @@ on search_report_ab_no_picture()
 	return convert_results_to_datasource_record(theResults)
 end search_report_ab_no_picture
 
+on search_report_ab_with_picture()
+	tell application "Address Book"
+		set theResults to {{}, {}, {}}
+		set {theID, theNick, theName, theImage} to {id, nickname, name, image} of every person
+		repeat with i from 1 to (count of theID)
+			if item i of theImage is not missing value then
+				set the end of item 1 of theResults to item i of theID
+				set the end of item 2 of theResults to item i of theNick
+				set the end of item 3 of theResults to item i of theName
+			end if
+		end repeat
+	end tell
+	return convert_results_to_datasource_record(theResults)
+end search_report_ab_with_picture
+
 on search_report_adium_no_picture()
 	set theResults to {{}, {}, {}}
 	tell application "Adium"
@@ -620,6 +635,21 @@ on search_report_adium_no_picture()
 	end tell
 	return convert_results_to_datasource_record(theResults)
 end search_report_adium_no_picture
+
+on search_report_adium_with_picture()
+	set theResults to {{}, {}, {}}
+	tell application "Adium"
+		set {theID, theNick, theName, theImage} to {id of account, name, display name, image} of every contact
+		repeat with i from 1 to (count of theID)
+			if item i of theImage is not missing value then
+				set the end of item 1 of theResults to item i of theID
+				set the end of item 2 of theResults to item i of theNick
+				set the end of item 3 of theResults to item i of theName
+			end if
+		end repeat
+	end tell
+	return convert_results_to_datasource_record(theResults)
+end search_report_adium_with_picture
 
 on search_report_ab_with_service(theService)
 	tell application "Address Book"
@@ -641,48 +671,47 @@ on search_report_ab_with_service(theService)
 	return convert_results_to_datasource_record(theResults)
 end search_report_ab_with_service
 
-on search_report_adium_with_service(theService)
-	set theResults to {{}, {}, {}}
-	set theResults2 to {{}, {}, {}}
-	set serviceName2 to ""
-	
-	if theService is "aim" then
-		set serviceName to aim of adiumServiceId
-		set serviceName2 to mac of adiumServiceId
-	else if theService is "icq" then
-		set serviceName to icq of adiumServiceId
-	else if theService is "msn" then
-		set serviceName to msn of adiumServiceId
-	else if theService is "yim" then
-		set serviceName to yim of adiumServiceId
-	else if theService is "jab" then
-		set serviceName to jab of adiumServiceId
-		set serviceName2 to gtalk of adiumServiceId
-	else
-		set theResults to {{}, {}, {}}
-		my myLog("** Unknown service: " & theService, 0)
-	end if
-	
-	tell application "Adium"
-		set theResults to {id of account, name, display name} of (contacts of accounts of service serviceName)
-		if serviceName2 is not "" then
-			set theResults2 to {id of account, name, display name} of (contacts of accounts of service serviceName2)
-		end if
-	end tell
-	
+on fix_adium_search_results(theResults)
 	-- Empty return for account not used: {{}, {}, {}}
 	-- Empty return for account offline: {{{}}, {{}}, {{}}}
+	if theResults is {{}, {}, {}} then return theResults -- nothing to do
 	
 	-- Converts { {{id}}, {{name}}, {{display name}} } to { {id}, {name}, {display name} }
 	try
 		set theResults to {item 1 of item 1 of theResults, item 1 of item 2 of theResults, item 1 of item 3 of theResults}
 	end try
-	try
-		set theResults2 to {item 1 of item 1 of theResults2, item 1 of item 2 of theResults2, item 1 of item 3 of theResults2}
-	end try
+end fix_adium_search_results
+
+on search_report_adium_with_service(theService)
+	set theResults to {{}, {}, {}}
 	
-	-- Joins the two result sets
-	set theResults to {item 1 of theResults & item 1 of theResults2, item 2 of theResults & item 2 of theResults2, item 3 of theResults & item 3 of theResults2}
+	-- Get service names
+	if theService is "aim" then
+		set serviceNames to {aim of adiumServiceId, mac of adiumServiceId}
+	else if theService is "icq" then
+		set serviceNames to {icq of adiumServiceId}
+	else if theService is "msn" then
+		set serviceNames to {msn of adiumServiceId}
+	else if theService is "yim" then
+		set serviceNames to {yim of adiumServiceId}
+	else if theService is "jab" then
+		set serviceNames to {jab of adiumServiceId, gtalk of adiumServiceId}
+	else if theService is "xxx" then
+		-- Get names of all other (unsuported) services
+		tell application "Adium" to set serviceNames to name of services whose name is not "AIM" and name is not "Mac" and name is not "ICQ" and name is not "MSN" and name is not "Yahoo!" and name is not "Jabber" and name is not "GTalk"
+	else
+		my myLog("** Unknown service: " & theService, 0)
+		return convert_results_to_datasource_record({{}, {}, {}})
+	end if
+	
+	repeat with serviceName in serviceNames
+		-- Get all contacts from this service
+		tell application "Adium" to set theResults2 to {id of account, name, display name} of (contacts of accounts of service serviceName)
+		-- Sanitize results
+		set theResults2 to my fix_adium_search_results(theResults2)
+		-- Joins the new result sets to the main data holder
+		set theResults to {item 1 of theResults & item 1 of theResults2, item 2 of theResults & item 2 of theResults2, item 3 of theResults & item 3 of theResults2}
+	end repeat
 	
 	return convert_results_to_datasource_record(theResults)
 end search_report_adium_with_service
@@ -1469,6 +1498,18 @@ on choose menu item theObject
 		auto_show_first_result(abView)
 		stop progress indicator "progress" of abView
 		
+	else if name of theObject is "report_with_picture_ab" then
+		set reportName to title of theObject
+		--myLog("action: report " & reportName, 1)
+		
+		start progress indicator "progress" of abView
+		clear_details(abView)
+		clear_search(abView)
+		set_status_bar(abView, reportName)
+		populate_table(abView, search_report_ab_with_picture())
+		auto_show_first_result(abView)
+		stop progress indicator "progress" of abView
+		
 	else if name of theObject is "report_no_picture_adium" then
 		set reportName to title of theObject
 		--myLog("action: report " & reportName, 1)
@@ -1478,6 +1519,18 @@ on choose menu item theObject
 		clear_search(adiumView)
 		set_status_bar(adiumView, reportName)
 		populate_table(adiumView, search_report_adium_no_picture())
+		auto_show_first_result(adiumView)
+		stop progress indicator "progress" of adiumView
+		
+	else if name of theObject is "report_with_picture_adium" then
+		set reportName to title of theObject
+		--myLog("action: report " & reportName, 1)
+		
+		start progress indicator "progress" of adiumView
+		clear_details(adiumView)
+		clear_search(adiumView)
+		set_status_bar(adiumView, reportName)
+		populate_table(adiumView, search_report_adium_with_picture())
 		auto_show_first_result(adiumView)
 		stop progress indicator "progress" of adiumView
 		
