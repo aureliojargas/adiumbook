@@ -106,6 +106,16 @@ Adium versions
 	>= 1.2:
 		- The AppleScript support was completely rewritten, breaking everything
 
+
+Mac OS X versions
+
+	Leopard:
+		- tell application "Address Book" to save addressbook
+		
+	Snow Leopard:
+		- tell application "Address Book" to save
+
+
 Tips
 	Monitor execution with Console.app to track for AB and Adium warnings
 	Comment log calls: ^(\t+)((my )*mylog\(.*, [1-5]\))      \1--\2
@@ -1361,7 +1371,7 @@ on clicked theObject
 			end tell
 			set_ab_im(abPerson, theService, theLogin)
 			copy_adium_picture_to_ab(adiumPerson, abPerson)
-			tell application "Address Book" to save addressbook
+			tell application "Address Book" to save
 			
 			-- Contact added. Now fill table with him/her and show the details
 			populate_table(abView, {{|id|:abPerson, nick:"", |name|:|name| of theInfo}})
