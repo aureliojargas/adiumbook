@@ -110,11 +110,16 @@ Adium versions
 Mac OS X versions
 
 	Leopard:
-		- tell application "Address Book" to save addressbook
+		1. tell application "Address Book" to save addressbook
+		2. Sets new IM Handle without needing to save addressbook
+		3. every person whose AIM handles is not {}
 		
 	Snow Leopard:
-		- tell application "Address Book" to save
-		- Needs to save adddress book after adding new IM Handle (see set_ab_im)
+		1. tell application "Address Book" to save
+		2. Needs to save adddress book after adding new IM Handle
+		   (see set_ab_im)
+		3. every person whose value of first AIM Handle is not missing value
+		   (see search_report_ab_with_service)
 
 
 Tips
@@ -665,15 +670,15 @@ end search_report_adium_with_picture
 on search_report_ab_with_service(theService)
 	tell application "Address Book"
 		if theService is "aim" then
-			set theResults to {id, nickname, name} of (every person whose AIM handles is not {})
+			set theResults to {id, nickname, name} of (every person whose value of first AIM Handle is not missing value)
 		else if theService is "icq" then
-			set theResults to {id, nickname, name} of (every person whose ICQ handles is not {})
+			set theResults to {id, nickname, name} of (every person whose value of first ICQ Handle is not missing value)
 		else if theService is "msn" then
-			set theResults to {id, nickname, name} of (every person whose MSN handles is not {})
+			set theResults to {id, nickname, name} of (every person whose value of first MSN Handle is not missing value)
 		else if theService is "yim" then
-			set theResults to {id, nickname, name} of (every person whose Yahoo handles is not {})
+			set theResults to {id, nickname, name} of (every person whose value of first Yahoo Handle is not missing value)
 		else if theService is "jab" then
-			set theResults to {id, nickname, name} of (every person whose Jabber handles is not {})
+			set theResults to {id, nickname, name} of (every person whose value of first Jabber Handle is not missing value)
 		else
 			set theResults to {"", "", ""}
 			my myLog("** Unknown service: " & theService, 0)
