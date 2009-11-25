@@ -114,6 +114,7 @@ Mac OS X versions
 		
 	Snow Leopard:
 		- tell application "Address Book" to save
+		- Needs to save adddress book after adding new IM Handle (see set_ab_im)
 
 
 Tips
@@ -886,6 +887,7 @@ on set_ab_im(abPerson, imService, imLogin)
 			else if imService is in {jab, gtalk} of adiumServiceId then
 				make new Jabber handle at end of Jabber handles with properties {label:abImDefaultLabel, value:imLogin}
 			end if
+			tell application "Address Book" to save
 		end tell
 	end tell
 end set_ab_im
