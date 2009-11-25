@@ -582,8 +582,7 @@ end search_ab_name_nick
 
 on search_report_ab_no_im()
 	tell application "Address Book"
-		set theResults to {id, nickname, name} of (every person whose AIM handles is {} and ICQ handles is {} and MSN handles is {} and Yahoo handles is {} and Jabber handles is {})
-		
+		set theResults to {id, nickname, name} of (every person whose (value of first AIM handle) is missing value and (value of first ICQ handle) is missing value and (value of first MSN handle) is missing value and (value of first Yahoo handle) is missing value and (value of first Jabber handle) is missing value)
 	end tell
 	return convert_results_to_datasource_record(theResults)
 end search_report_ab_no_im
