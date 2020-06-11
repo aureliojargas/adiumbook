@@ -1,14 +1,35 @@
-#summary AdiumBook Version History (Changelog)
-#labels Featured
+# Changelog for AdiumBook
 
-If you have a feature request or found a bug, please [http://code.google.com/p/adiumbook/issues/list submit an issue].
+All notable changes to this project are documented in this file.
 
-== Version 1.5 Snow (November 2009) ==
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-This is a bugfix release to make !AdiumBook 1.5 work on the new Snow Leopard. Users still in Leopard have no need to upgrade.
+[Unreleased]:    https://github.com/aureliojargas/adiumbook/compare/v1.5.1...HEAD
+[Version 1.5.1]: https://github.com/aureliojargas/adiumbook/releases/tag/v1.5.1
+[Version 1.5]:   https://github.com/aureliojargas/adiumbook/releases/tag/v1.5
+[Version 1.4]:   https://github.com/aureliojargas/adiumbook/releases/tag/v1.4
+[Version 1.3.1]: https://github.com/aureliojargas/adiumbook/releases/tag/v1.3.1
+[Version 1.3]:   https://github.com/aureliojargas/adiumbook/releases/tag/v1.3
+[Version 1.2]:   https://github.com/aureliojargas/adiumbook/releases/tag/v1.2
+[Version 1.1]:   https://github.com/aureliojargas/adiumbook/releases/tag/v1.1
+[Version 1.0]:   https://github.com/aureliojargas/adiumbook/releases/tag/v1.0
 
- * Fixed the Set IM button that wasn't saving changes in Snow Leopard (closes issue #33)
- * Fixed the "Address Book contacts with no IM" report under Snow Leopard (closes issue #35)
+[issue #1]:  https://code.google.com/archive/p/adiumbook/issues/1
+[issue #5]:  https://code.google.com/archive/p/adiumbook/issues/5
+[issue #10]: https://code.google.com/archive/p/adiumbook/issues/10
+[issue #12]: https://code.google.com/archive/p/adiumbook/issues/12
+[issue #14]: https://code.google.com/archive/p/adiumbook/issues/14
+[issue #19]: https://code.google.com/archive/p/adiumbook/issues/19
+[issue #33]: https://code.google.com/archive/p/adiumbook/issues/33
+[issue #35]: https://code.google.com/archive/p/adiumbook/issues/35
+
+
+## [Version 1.5.1] released in November 2009
+
+This is a bugfix release to make AdiumBook 1.5 work on the new Snow Leopard. Users still in Leopard have no need to upgrade.
+
+ * Fixed the Set IM button that wasn't saving changes in Snow Leopard (closes [issue #33])
+ * Fixed the "Address Book contacts with no IM" report under Snow Leopard (closes [issue #35])
  * Fixed the following reports under Snow Leopard:
    * Address Book contacts with AIM/.Mac
    * Address Book contacts with ICQ
@@ -16,10 +37,10 @@ This is a bugfix release to make !AdiumBook 1.5 work on the new Snow Leopard. Us
    * Address Book contacts with Yahoo!
    * Address Book contacts with Jabber
 
-== Version 1.5 (March 2009) ==
+## [Version 1.5] released in March 2009
 
  * Fixed compatibility issues, now works with Adium 1.3 and newer.
- * Fixed the display of Adium pictures, which wasn't working for some contacts. (closes issue #19)
+ * Fixed the display of Adium pictures, which wasn't working for some contacts. (closes [issue #19])
  * New reports:
    * Adium contacts with AIM/Mac
    * Adium contacts with ICQ
@@ -30,27 +51,27 @@ This is a bugfix release to make !AdiumBook 1.5 work on the new Snow Leopard. Us
    * Adium contacts with picture
    * Adium contacts without picture
    * Address Book contacts with picture
- * Added automatic software update, provided by [http://sparkle.andymatuschak.org/ Sparkle]. (closes issue #14)
+ * Added automatic software update, provided by [Sparkle](http://sparkle.andymatuschak.org/). (closes [issue #14])
  * We're back to the standard About panel, featuring:
    * the release version number (1.5)
    * the SVN revision number (50)
-   * a link to the [http://code.google.com/p/adiumbook/source/checkout AdiumBook sources]
+   * a link to the AdiumBook sources
    * pretty credits with donators names
  * Service icons (ICQ, AIM, MSN, etc) were updated to match the new Adium icons.
- * New menu item !AdiumBook > [http://osx.iusethis.com/app/adiumbook i use this].
+ * New menu item AdiumBook > [i use this](http://osx.iusethis.com/app/adiumbook).
  * Improved Help contents.
- * !AdiumBook is now packaged as a ZIP file instead DMG, to keep things simple.
+ * AdiumBook is now packaged as a ZIP file instead DMG, to keep things simple.
 
 This release took me *29 work hours* to be made.
 I hope you like it!
 
-== Version 1.4 (July 2008) ==
+## [Version 1.4] released in July 2008
 
- * The main window is now resizable, helping users with hundreds of contacts. (closes issue #1)
- * Added full text search for the "Find in Adium" and "Find in AB" buttons, now scanning the Adium's names and screen names and Address Book's names, nicknames, e-mails, AIM/ICQ/MSN/Yahoo/Jabber names. (closes issue #12)
- * Improved "AB contacts not in Adium" report, now finding AIM contacts with spaces on the screen name. (issue #10)
+ * The main window is now resizable, helping users with hundreds of contacts. (closes [issue #1])
+ * Added full text search for the "Find in Adium" and "Find in AB" buttons, now scanning the Adium's names and screen names and Address Book's names, nicknames, e-mails, AIM/ICQ/MSN/Yahoo/Jabber names. (closes [issue #12])
+ * Improved "AB contacts not in Adium" report, now finding AIM contacts with spaces on the screen name. ([issue #10])
  * Added a progress bar for the "Adium contacts not in AB" and "AB contacts not in Adium" reports, because they take some time to terminate.
- * New menu item !AdiumBook > Report an issue.
+ * New menu item AdiumBook > Report an issue.
  * Clicking news:
    * Clicking the contact picture now reveals its file in Finder.
    * Clicking the Address Book icon brings the Address Book application to the front.
@@ -59,30 +80,30 @@ I hope you like it!
  * The contact details are now cleared when scrolling results with the keyboard, avoiding visual confusion.
  * Added tool tips to the multiple IMs popup buttons (Address Book pane), informing about the right click feature.
  * Improved tool tips for the Set buttons, making clear that de "Set IM" is an append operation (non destructive) and the "Set Pic" is an overwrite operation (destructive).
- * Improved About window, now listing the !AdiumBook supporters.
+ * Improved About window, now listing the AdiumBook supporters.
  * Improved Help contents.
 
  * *Note:* Besides the new full text search on the Find buttons, the reports still search only by service. This is desired, because you still need to fill the correct IM field in Address Book for those contacts.
 
- * *Note for Tiger users:* This release just works in Leopard. The Adium bug on !AppleScript for Tiger was not fixed (see issue #5), we'll have to wait until the future Adium 1.3 release. For now, you must use !AdiumBook 1.3 and Adium 1.1.4 or older.
+ * *Note for Tiger users:* This release just works in Leopard. The Adium bug on AppleScript for Tiger was not fixed (see [issue #5]), we'll have to wait until the future Adium 1.3 release. For now, you must use AdiumBook 1.3 and Adium 1.1.4 or older.
 
 This release took me *32 work hours* to be made.
 I hope you like it!
 
-== Version 1.3.1 (January 2008) ==
+## [Version 1.3.1] released in January 2008
 
  * Code updated to support the new Adium version 1.2 (Leopard only by now)
- * Program name changed from Adium Book to !AdiumBook.
+ * Program name changed from Adium Book to AdiumBook.
  * License changed from "pick your favorite" to BSD.
 
- * Note 1: Adium version 1.2 came with a brand new !AppleScript support. Although more powerful and flexible, it broke compatibility with previous Adium versions. This demanded huge changes in !AdiumBook, a lot of code was rewritten using the new syntax. Starting from this release, *!AdiumBook will only work with Adium 1.2 or newer.* You can continue using the previous !AdiumBook 1.3 if your Adium is 1.1.4 or older.
+ * Note 1: Adium version 1.2 came with a brand new AppleScript support. Although more powerful and flexible, it broke compatibility with previous Adium versions. This demanded huge changes in AdiumBook, a lot of code was rewritten using the new syntax. Starting from this release, *AdiumBook will only work with Adium 1.2 or newer.* You can continue using the previous AdiumBook 1.3 if your Adium is 1.1.4 or older.
 
- * Note 2: There seem to have some issues with the new Adium !AppleScript support in Tiger (see issue #5), so *this release just works in Leopard*. If you're in Tiger you must use !AdiumBook 1.3 and Adium 1.1.4 or older. I hope this limitation will be fixed in future versions.
+ * Note 2: There seem to have some issues with the new Adium AppleScript support in Tiger (see [issue #5]), so *this release just works in Leopard*. If you're in Tiger you must use AdiumBook 1.3 and Adium 1.1.4 or older. I hope this limitation will be fixed in future versions.
 
 This release took me *16 work hours* to be made.
 I hope you like it!
 
-== Version 1.3 (September 2006) ==
+## [Version 1.3] released in September 2006
 
  * Reworked interface
    * Cleaner, simpler
@@ -108,7 +129,7 @@ I hope you like it!
    * Read defaults at awake, save_defaults() at stop points
  * Make sure Address Book is saved after adding a card
 
-== Version 1.2 (August 2006) ==
+## [Version 1.2] released in August 2006
 
  * Added Google Talk support (mapped to Jabber on Address Book) _(thanks john mora)_
  * New button to reveal the contact's card on Address Book
@@ -116,7 +137,7 @@ I hope you like it!
  * New Donate menu item, so you can contribute with the project
  * Fixed some "try" blocks that were causing warnings on Address Book logs
 
-== Version 1.1 (September 2005) ==
+## [Version 1.1] released in September 2005
 
  * Added Jabber support (search, show, set and report) _(thanks gwm)_
  * New button to set the IM field in Address Book _(thanks kojima)_
@@ -133,7 +154,7 @@ I hope you like it!
    * Push buttons replaced by pretty square buttons with icons
    * Now the IM icons becomes disabled if the field is empty (no more N/A)
 
-== Version 1.0 (August 2005) ==
+## [Version 1.0] released in August 2005
 
  * Text search
  * Cross search ("Find in" buttons)
