@@ -1,0 +1,2 @@
+(no author) = Aurelio Jargas <verde@aurelio.net>
+aureliojargas = Aurelio Jargas <verde@aurelio.net>
