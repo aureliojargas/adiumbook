@@ -1,0 +1,48 @@
+https://code.google.com/archive/p/adiumbook/issues
+
+ID   Status      Summary
+--   ------      -------
+45   New         creating group in ldap does not sync in Adium
+44   New         Timeout Error on locating a contact
+43   New         Adium keeps saying the "friendly name" is changing too rapidly.
+42   New         Compatibility with Mac OSX Lion
+41   New         Program does nothing
+40   New         Batch find + edit
+39   New         Grouped contact not exploited
+38   New         List Contact
+37   New         import all contacts not in adium automatic button
+36   Duplicate   using arrows key info window empty
+35   Fixed       Address Book got an error: Can't make {} into type AIM handle. (-1700)
+34   New         No sync between Adium and MS Exchange Contacts
+33   Fixed       IM names from Adium not saved in Address Book
+32   New         Applescript Error: mktemp: too few X's in template `AdiumBook' (1)
+31   Invalid     Why can't I add my cell phone to Adium?
+30   New         Doesn't recognize/search email addresses for IM contact info
+29   New         Use "work" instead of "home"
+28   Accepted    Check for duplicates before adding IM to Address Book Type-Enhancement Priority-High
+27   Accepted    Set Picture button for Adium, makes sense? Type-Other
+26   Accepted    More progress bars on delayed reports Type-Enhancement Priority-Medium
+25   Accepted    Make a portuguese translation Type-Enhancement Priority-Medium
+24   Accepted    Use standard Cocoa toolbar Type-Enhancement
+23   WontFix     Does not update Adium contact pictures
+21   New         Enhancement: Skype contacts support Type-Enhancement Priority-Medium
+20   Accepted    Add support for other services (Gadu-Gadu, QQ, Facebook, MySpace...) Type-Enhancement Priority-High
+19   Fixed       No picture Type-Defect Priority-Critical
+18   New         Add a Reveal in Adium button Type-Enhancement Priority-Medium
+17   Accepted    Refresh the details when scrolling with the keyboard Type-Enhancement Priority-Medium
+16   New         Add drag'n'drop support Type-Enhancement Priority-Medium
+15   New         Add contact to Adium Type-Enhancement Priority-High
+14   Fixed       Add Sparkle automatic update Type-Enhancement Priority-High
+13   New         Search for the full name when card is a Company Type-Defect Priority-Medium
+12   Fixed       Please search by people's names Type-Defect Priority-Medium
+11   Accepted    Set Email button (was: Gmail Chat and Email Address) Type-Enhancement Priority-Medium
+10   Started     AIM Screennames case/space sensistive Type-Defect Priority-Medium
+9    Invalid     Address Book e-mail field not filled when adding contact from Adium Type-Enhancement Priority-Medium
+8    Duplicate   AppleScript Error Type-Defect Priority-Medium
+7    Invalid     Adium got an error: Can’t get every «class ltct». (-1728) Type-Defect Priority-Medium
+6    Duplicate   Error: Can't make id of account of every contact into type reference Type-Defect Priority-Medium
+5    Fixed       Version 1.3.1 and 1.4 not working in Tiger (AppleScript Error) Type-Defect Priority-High
+4    Duplicate   Applescript Error Type-Defect Priority-Medium
+3    Fixed       AppleScript Error in Adium 1.2 Type-Defect Priority-Critical
+2    Invalid     importing contacts Type-Other Priority-Medium
+1    Fixed       Implement window resize Type-Enhancement Priority-High
